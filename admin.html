@@ -3,37 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spark Admin Panel</title>
+  <title>Admin Dashboard | Spark Community</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">⚡ Spark <span>Community</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="plans.html">Plans & Shop</a></li>
+      <li><a href="orders.html">Orders & Invoices</a></li>
+      <li><a href="admin.html" class="active btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
+    </ul>
+  </nav>
+
   <div class="container admin-container">
     
-    <!-- Login Gate -->
+    <!-- 1. Google Sign-In Gate (Jab tak login na ho) -->
     <div id="loginGate">
       <div class="login-card">
-        <div class="logo">⚡ Spark <span>Admin</span></div>
-        <p style="margin: 1rem 0; color: #94a3b8;">Is page ka access sirf authorized admin accounts ko hai.</p>
+        <div class="logo" style="justify-content: center; margin-bottom: 0.5rem;">⚡ Spark <span>Admin</span></div>
+        <p style="margin: 0.8rem 0 1.2rem; color: #94a3b8; font-size: 0.9rem;">
+          Yeh dashboard sirf verified staff accounts (fzboy2008 & fouzanwani2008) ke liye reserved hai.
+        </p>
         <button class="btn primary-btn full-w" onclick="googleAdminLogin()">
           <i class="fa-brands fa-google"></i> Sign In With Google
         </button>
-        <p id="adminErrorMsg" style="color:#ef4444; margin-top:10px; font-size:0.9rem;"></p>
+        <p id="adminErrorMsg" style="color: #ef4444; margin-top: 10px; font-size: 0.85rem;"></p>
       </div>
     </div>
 
-    <!-- Admin Dashboard Panel -->
+    <!-- 2. Staff Dashboard Panel (Login ke baad show hoga) -->
     <div id="adminPanel" style="display:none;">
-      <div class="admin-topbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid #1e293b; padding-bottom:1rem;">
+      
+      <div class="admin-topbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #1a2333; padding-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
         <div>
           <h2>Spark Staff Control Panel</h2>
-          <p style="color:#94a3b8;">Logged in as: <strong id="currentAdminEmail" style="color:#38bdf8;"></strong></p>
+          <p style="color: #94a3b8; font-size: 0.85rem;">Logged in as: <strong id="currentAdminEmail" style="color: #38bdf8;"></strong></p>
         </div>
-        <button class="btn secondary-btn" onclick="logoutAdmin()">Logout</button>
+        <button class="btn secondary-btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
       </div>
 
-      <h3>Pending & Recent Orders</h3>
-      <div style="overflow-x:auto;">
+      <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Pending & Recent Orders</h3>
+
+      <!-- Responsive Table Scroll Wrapper -->
+      <div class="table-responsive">
         <table class="orders-table">
           <thead>
             <tr>
@@ -42,24 +59,27 @@
               <th>Plan</th>
               <th>UTR Number</th>
               <th>Amount</th>
-              <th>Coupon</th>
+              <th>Promoter (10% Profit)</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="ordersListTable">
-            <!-- Dynamic Realtime Orders script.js se render honge -->
+            <!-- Orders dynamically script.js se Firebase Realtime DB se load honge -->
           </tbody>
         </table>
       </div>
+
     </div>
 
   </div>
 
-  <!-- Firebase Compatibility Scripts & Main Logic -->
+  <!-- Firebase Compatibility Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
+  <!-- Main Logic Script -->
   <script src="script.js"></script>
 </body>
 </html>
