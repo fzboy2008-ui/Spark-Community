@@ -368,15 +368,20 @@ function loadAdminOrders() {
 
     Object.keys(orders).reverse().forEach((key) => {
       const o = orders[key];
+      
+      // Fix: Undefined values protection
+      const isPromoted = o.promoterStaff && o.promoterStaff !== "NONE" && o.promoterStaff !== "undefined";
+      const staffProfit = o.staffProfit ? o.staffProfit : Math.round(o.amount * 0.10);
+
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><strong>${o.orderId}</strong></td>
-        <td>${o.clientName}<br><small style="color:#fda4af;">${o.clientEmail}</small></td>
-        <td>${o.plan}</td>
-        <td><code style="background:#090305; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr}</code></td>
+        <td>${o.clientName || 'User'}<br><small style="color:#fda4af;">${o.clientEmail || ''}</small></td>
+        <td>${o.plan || 'Custom Plan'}</td>
+        <td><code style="background:#090305; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr || 'N/A'}</code></td>
         <td>₹${o.amount}</td>
         <td>
-          ${o.promoterStaff !== "NONE" ? `<strong style="color:#10b981;">${o.promoterStaff}</strong><br><small style="color:#ff4d64;">(10% Profit: ₹${o.staffProfit})</small>` : '<span style="color:#64748b;">Direct</span>'}
+          ${isPromoted ? `<strong style="color:#10b981;">${o.promoterStaff}</strong><br><small style="color:#ff4d64;">(10% Profit: ₹${staffProfit})</small>` : '<span style="color:#64748b;">Direct</span>'}
         </td>
         <td><span class="badge-status badge-${o.status}">${o.status}</span></td>
         <td>
@@ -398,3 +403,4 @@ function updateOrderStatus(id, newStatus) {
     alert("Update failed: " + err.message);
   });
 }
+  
