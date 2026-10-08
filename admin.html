@@ -9,63 +9,70 @@
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
+  <!-- Navigation Drawer Backdrop -->
+  <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
+
+  <!-- Navbar with 3-Lines -->
   <nav class="navbar">
-    <div class="logo">⚡ Spark <span>Community</span></div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="plans.html">Plans & Shop</a></li>
-      <li><a href="orders.html">Orders & Invoices</a></li>
+    <a href="index.html" class="logo">⚡ Spark <span>Community</span></a>
+    <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul class="nav-links" id="navDrawer">
+      <button class="close-menu-btn" onclick="toggleNav()">&times;</button>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="plans.html"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
+      <li><a href="orders.html"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
       <li><a href="admin.html" class="active btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
     </ul>
   </nav>
 
   <div class="container admin-container">
     
-    <!-- 1. Google Sign-In Gate (Jab tak login na ho) -->
+    <!-- 1. Google Sign-In Gate -->
     <div id="loginGate">
       <div class="login-card">
         <div class="logo" style="justify-content: center; margin-bottom: 0.5rem;">⚡ Spark <span>Admin</span></div>
-        <p style="margin: 0.8rem 0 1.2rem; color: #94a3b8; font-size: 0.9rem;">
+        <p style="margin: 0.8rem 0 1.2rem; color: #fda4af; font-size: 0.88rem;">
           Yeh dashboard sirf verified staff accounts (fzboy2008 & fouzanwani2008) ke liye reserved hai.
         </p>
         <button class="btn primary-btn full-w" onclick="googleAdminLogin()">
           <i class="fa-brands fa-google"></i> Sign In With Google
         </button>
-        <p id="adminErrorMsg" style="color: #ef4444; margin-top: 10px; font-size: 0.85rem;"></p>
+        <p id="adminErrorMsg" style="color: #ef4444; margin-top: 10px; font-size: 0.82rem;"></p>
       </div>
     </div>
 
-    <!-- 2. Staff Dashboard Panel (Login ke baad show hoga) -->
+    <!-- 2. Staff Dashboard Panel -->
     <div id="adminPanel" style="display:none;">
       
-      <div class="admin-topbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #1a2333; padding-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #3c1218; padding-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
         <div>
-          <h2>Spark Staff Control Panel</h2>
-          <p style="color: #94a3b8; font-size: 0.85rem;">Logged in as: <strong id="currentAdminEmail" style="color: #38bdf8;"></strong></p>
+          <h2 style="font-size:1.4rem; color:#fff;">Spark Staff Control Panel[span_7](start_span)[span_7](end_span)</h2>
+          <p style="color: #fda4af; font-size: 0.85rem;">Logged in as: <strong id="currentAdminEmail" style="color: #ff4d64;"></strong>[span_8](start_span)[span_8](end_span)</p>
         </div>
-        <button class="btn secondary-btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        <button class="btn secondary-btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout[span_9](start_span)[span_9](end_span)</button>
       </div>
 
-      <h3 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Pending & Recent Orders</h3>
+      <h3 style="margin-bottom: 0.6rem; font-size: 1.15rem; color:#fff;">Pending & Recent Orders[span_10](start_span)[span_10](end_span)</h3>
 
       <!-- Responsive Table Scroll Wrapper -->
       <div class="table-responsive">
         <table class="orders-table">
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Plan</th>
-              <th>UTR Number</th>
-              <th>Amount</th>
+              <th>Order ID[span_11](start_span)[span_11](end_span)</th>
+              <th>Customer[span_12](start_span)[span_12](end_span)</th>
+              <th>Plan[span_13](start_span)[span_13](end_span)</th>
+              <th>UTR Number[span_14](start_span)[span_14](end_span)</th>
+              <th>Amount[span_15](start_span)[span_15](end_span)</th>
               <th>Promoter (10% Profit)</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="ordersListTable">
-            <!-- Orders dynamically script.js se Firebase Realtime DB se load honge -->
+            <!-- Dynamic data loaded from Firebase -->
           </tbody>
         </table>
       </div>
@@ -74,12 +81,14 @@
 
   </div>
 
+  <footer>
+    <p>© Spark Community. All rights reserved.</p>
+  </footer>
+
   <!-- Firebase Compatibility Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  
-  <!-- Main Logic Script -->
   <script src="script.js"></script>
 </body>
 </html>
