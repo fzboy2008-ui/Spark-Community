@@ -1,4 +1,6 @@
-// Firebase Configuration
+// ==========================================
+// 1. FIREBASE CONFIGURATION & INITIALIZATION
+// ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyC2-XllE7e9xeK8p4vOCnNMHyGPSK-Hi70",
   authDomain: "spark-98139.firebaseapp.com",
@@ -10,17 +12,32 @@ const firebaseConfig = {
   measurementId: "G-FTSXDP16LP"
 };
 
+// Plain browser compatibility initialization
 if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 
-// 17 Features List
+// ==========================================
+// 2. CONSTANTS & SYSTEM DATA
+// ==========================================
 const availableFeatures = [
-  "Welcome System", "Ticket System", "Store System", "Invite System",
-  "Giveaway System", "Say System", "Goodbye System", "Auto Moderation",
-  "Anti-Nuke", "Auto Response", "Server Stats", "VC Generator",
-  "Staff Application System", "YouTube Upload Notifications",
-  "Onboarding Buttons", "Nitro Emoji Converter", "Custom Bot Logo"
+  "Welcome System",
+  "Ticket System",
+  "Store System",
+  "Invite System",
+  "Giveaway System",
+  "Say System",
+  "Goodbye System",
+  "Auto Moderation",
+  "Anti-Nuke",
+  "Auto Response",
+  "Server Stats",
+  "VC Generator",
+  "Staff Application System",
+  "YouTube Upload Notifications",
+  "Onboarding Buttons",
+  "Nitro Emoji Converter",
+  "Custom Bot Logo"
 ];
 
 // Staff Affiliate Mapping (10% Commission to Staff)
@@ -32,11 +49,13 @@ const staffAffiliateMap = {
   "Sprk-719-sprky": "Sparky Promoter"
 };
 
+// Authorized Admin Accounts
 const authorizedAdminEmails = [
   "fzboy2008@gmail.com",
   "fouzanwani2008@gmail.com"
 ];
 
+// Active Checkout State
 let activeCheckout = {
   plan: '',
   details: '',
@@ -46,7 +65,11 @@ let activeCheckout = {
   staffCommission: 0
 };
 
+// ==========================================
+// 3. PAGE INITIALIZATION (DOM LOAD)
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+  // Render 17 items inside plans.html
   const featuresContainer = document.getElementById("featuresList");
   if (featuresContainer) {
     featuresContainer.innerHTML = "";
@@ -55,12 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
       label.className = "feature-item-label";
       label.innerHTML = `
         <input type="checkbox" value="${feat}" onchange="recalculatePerFeature()">
-        <span><strong>${index + 1}.</strong> ${feat} — <em>₹20</em></span>
+        <span><strong>${index + 1}.</strong> ${feat} — <em>₹20/mo</em></span>
       `;
       featuresContainer.appendChild(label);
     });
   }
 
+  // Handle URL query string in orders.html (?id=SPK-XXXX)
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -68,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
+  // Check auth state persistence for admin panel
   if (typeof firebase !== 'undefined' && firebase.auth && document.getElementById('loginGate')) {
     firebase.auth().onAuthStateChanged((user) => {
       if (user && authorizedAdminEmails.includes(user.email)) {
@@ -80,6 +105,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ==========================================
+// 4. NAVBAR 3-LINES TOGGLE
+// ==========================================
+function toggleNav() {
+  const drawer = document.getElementById('navDrawer');
+  const backdrop = document.getElementById('navBackdrop');
+  if (drawer && backdrop) {
+    drawer.classList.toggle('active');
+    backdrop.classList.toggle('active');
+  }
+}
+
+// ==========================================
+// 5. PLAN CALCULATIONS & SELECTION
+// ==========================================
 function recalculatePerFeature() {
   const checked = document.querySelectorAll('#featuresList input[type="checkbox"]:checked');
   const count = checked.length;
@@ -87,17 +127,25 @@ function recalculatePerFeature() {
   const setupPrice = count > 0 ? 50 : 0;
   const total = itemsPrice + setupPrice;
 
-  document.getElementById("selectedCount").innerText = count;
-  document.getElementById("itemsPrice").innerText = itemsPrice;
-  document.getElementById("setupPrice").innerText = setupPrice;
-  document.getElementById("perFeatureTotal").innerText = total;
-  document.getElementById("btnOrderFeatures").disabled = count === 0;
+  const countElem = document.getElementById("selectedCount");
+  const itemsElem = document.getElementById("itemsPrice");
+  const setupElem = document.getElementById("setupPrice");
+  const totalElem = document.getElementById("perFeatureTotal");
+  const orderBtn = document.getElementById("btnOrderFeatures");
+
+  if (countElem) countElem.innerText = count;
+  if (itemsElem) itemsElem.innerText = itemsPrice;
+  if (setupElem) setupElem.innerText = setupPrice;
+  if (totalElem) totalElem.innerText = total;
+  if (orderBtn) orderBtn.disabled = count === 0;
 }
 
 function checkoutFeatures() {
-  const checked = Array.from(document.querySelectorAll('#featuresList input[type="checkbox"]:checked')).map(cb => cb.value);
-  const total = (checked.length * 20) + 50;
-  openCheckoutModal("Spark Bot (Selected Features)", checked.join(", "), total);
+  const checkedInputs = Array.from(document.querySelectorAll('#featuresList input[type="checkbox"]:checked'));
+  const selectedNames = checkedInputs.map(cb => cb.value);
+  const total = (selectedNames.length * 20) + 50;
+
+  openCheckoutModal("Spark Bot (Selected Features)", selectedNames.join(", "), total);
 }
 
 function selectCorePlan(name, price) {
@@ -108,17 +156,20 @@ function updateCustomTotal() {
   const selectElem = document.getElementById("customPanelSelect");
   if (!selectElem) return;
   const panel = parseInt(selectElem.value, 10);
-  document.getElementById("customTotalDisplay").innerText = `Total: ₹${500 + panel}`;
+  const total = 500 + panel;
+  document.getElementById("customTotalDisplay").innerText = `Total: ₹${total}`;
 }
 
 function selectCustomPlan() {
   const selectElem = document.getElementById("customPanelSelect");
   const panel = selectElem ? parseInt(selectElem.value, 10) : 0;
   const panelText = panel === 300 ? "Spark 24/7 Hosting Panel (₹300/mo)" : "Self Hosted VPS (₹0)";
-  openCheckoutModal("Custom Bot Creation", `Base: ₹500 | Panel: ${panelText}`, 500 + panel);
+  openCheckoutModal("Custom Bot Creation", `Base Creation: ₹500 | Hosting: ${panelText}`, 500 + panel);
 }
 
-// Open Paytm Checkout Modal & Set UPI Deep Link
+// ==========================================
+// 6. CHECKOUT MODAL & STAFF AFFILIATE
+// ==========================================
 function openCheckoutModal(planName, details, price) {
   activeCheckout = {
     plan: planName,
@@ -131,21 +182,29 @@ function openCheckoutModal(planName, details, price) {
 
   document.getElementById("mPlanName").innerText = planName;
   document.getElementById("mFinalPrice").innerText = price;
-  
-  // Dynamic UPI Intent Link for Mobile
-  const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=Spark%20Bot%20Payment`;
-  document.getElementById("paytmDeepLink").setAttribute("href", upiLink);
 
-  document.getElementById("couponInput").value = "";
-  document.getElementById("couponMsg").innerText = "";
+  // Dynamic UPI Intent Deep Link for Mobile UPI apps
+  const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=Spark%20Bot%20Payment`;
+  const deepLinkElem = document.getElementById("paytmDeepLink");
+  if (deepLinkElem) {
+    deepLinkElem.setAttribute("href", upiLink);
+  }
+
+  const couponInput = document.getElementById("couponInput");
+  if (couponInput) couponInput.value = "";
+  
+  const couponMsg = document.getElementById("couponMsg");
+  if (couponMsg) couponMsg.innerText = "";
+
   document.getElementById("checkoutModal").style.display = "flex";
 }
 
 function closeModal() {
-  document.getElementById("checkoutModal").style.display = "none";
+  const modal = document.getElementById("checkoutModal");
+  if (modal) modal.style.display = "none";
 }
 
-// Staff Affiliate Verification (Price same, 10% Staff profit tracked)
+// 10% Profit to Promoter (Customer price remains intact)
 function applyStaffCoupon() {
   const code = document.getElementById("couponInput").value.trim();
   const msg = document.getElementById("couponMsg");
@@ -159,19 +218,24 @@ function applyStaffCoupon() {
     activeCheckout.staffCommission = commission;
 
     msg.style.color = "#10b981";
-    msg.innerText = `Verified! Promoter: ${promoter} (10% Payout ₹${commission} will be credited to promoter)`;
+    msg.innerText = `Verified! Promoter: ${promoter} (10% Profit: ₹${commission} will be credited to promoter)`;
   } else {
     msg.style.color = "#ef4444";
-    msg.innerText = "Invalid promoter code!";
+    msg.innerText = "Invalid promoter code! Please recheck staff codes.";
   }
 }
 
-// Submit Order to Firebase Realtime DB
+// ==========================================
+// 7. ORDER SUBMISSION (FIREBASE REALTIME DB)
+// ==========================================
 async function handleOrderSubmission(e) {
   e.preventDefault();
+
   const submitBtn = e.target.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.innerText = "Submitting...";
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Submitting Order...";
+  }
 
   const orderId = "SPK-" + Math.floor(1000 + Math.random() * 9000);
   const now = new Date();
@@ -196,16 +260,21 @@ async function handleOrderSubmission(e) {
 
   try {
     await firebase.database().ref('orders/' + orderId).set(payload);
-    alert(`Order Placed!\nOrder ID: ${orderId}\nApproval under fzboy2008@gmail.com.`);
+    alert(`Order Placed Successfully!\n\nOrder ID: ${orderId}\nStatus: Processing\nVerification details have been forwarded to fzboy2008@gmail.com.`);
     closeModal();
     window.location.href = `orders.html?id=${orderId}`;
   } catch (error) {
-    alert("Error: " + error.message);
-    submitBtn.disabled = false;
+    alert("Error saving order: " + error.message);
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Confirm & Submit Order";
+    }
   }
 }
 
-// Track Order & Invoice
+// ==========================================
+// 8. ORDER TRACKER & INVOICE RENDER
+// ==========================================
 async function trackOrder() {
   const idInput = document.getElementById("searchOrderId");
   if (!idInput) return;
@@ -215,16 +284,17 @@ async function trackOrder() {
   const invWrapper = document.getElementById("invoiceContainer");
 
   try {
-    const snap = await firebase.database().ref('orders/' + id).once('value');
-    const data = snap.val();
+    const snapshot = await firebase.database().ref('orders/' + id).once('value');
+    const data = snapshot.val();
 
     if (!data) {
-      alert("Order ID not found!");
+      alert("Order ID nahi mila! Kripya sahi Order ID enter karein.");
       if (invWrapper) invWrapper.style.display = "none";
       return;
     }
 
-    invWrapper.style.display = "block";
+    if (invWrapper) invWrapper.style.display = "block";
+
     document.getElementById("invNumber").innerText = data.orderId;
     document.getElementById("invCustomerName").innerText = data.clientName;
     document.getElementById("invCustomerEmail").innerText = data.clientEmail;
@@ -239,31 +309,49 @@ async function trackOrder() {
     const badge = document.getElementById("invStatusBadge");
     badge.innerText = data.status;
     badge.className = `badge-status badge-${data.status}`;
+
+    const instruction = document.getElementById("invInstructionBox");
+    if (data.status === "Processing") {
+      instruction.innerText = "Order verification pending under Admin (fzboy2008@gmail.com). UTR verify hote hi status Approved ho jayega.";
+    } else if (data.status === "Approved") {
+      instruction.innerText = "Order Approved! Aapka bot claim karne ke liye hamare Discord Server (https://discord.gg/h5ejJAabPv) par ticket open karein.";
+    } else {
+      instruction.innerText = "Order Cancelled. Kripya verification issue ke liye Discord server par staff se contact karein.";
+    }
   } catch (err) {
-    alert(err.message);
+    alert("Tracking error: " + err.message);
   }
 }
 
-// Admin Panel Auth & Payout Table
+// ==========================================
+// 9. ADMIN GOOGLE AUTH & REAL-TIME DASHBOARD
+// ==========================================
 function googleAdminLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).then((res) => {
-    if (authorizedAdminEmails.includes(res.user.email)) {
-      document.getElementById("loginGate").style.display = "none";
-      document.getElementById("adminPanel").style.display = "block";
-      document.getElementById("currentAdminEmail").innerText = res.user.email;
-      loadAdminOrders();
-    } else {
-      firebase.auth().signOut();
-      document.getElementById("adminErrorMsg").innerText = "Unauthorized email!";
-    }
-  }).catch((err) => {
-    document.getElementById("adminErrorMsg").innerText = err.message;
-  });
+  const errorElem = document.getElementById("adminErrorMsg");
+
+  firebase.auth().signInWithPopup(provider)
+    .then((res) => {
+      const email = res.user.email;
+      if (authorizedAdminEmails.includes(email)) {
+        document.getElementById("loginGate").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+        document.getElementById("currentAdminEmail").innerText = email;
+        loadAdminOrders();
+      } else {
+        firebase.auth().signOut();
+        if (errorElem) errorElem.innerText = `Unauthorized: ${email} ke pass staff access nahi hai.`;
+      }
+    })
+    .catch((err) => {
+      if (errorElem) errorElem.innerText = err.message;
+    });
 }
 
 function logoutAdmin() {
-  firebase.auth().signOut().then(() => window.location.reload());
+  firebase.auth().signOut().then(() => {
+    window.location.reload();
+  });
 }
 
 function loadAdminOrders() {
@@ -274,7 +362,7 @@ function loadAdminOrders() {
     table.innerHTML = "";
     const orders = snap.val();
     if (!orders) {
-      table.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:#94a3b8;">No orders found.</td></tr>`;
+      table.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:#94a3b8;">No orders received yet.</td></tr>`;
       return;
     }
 
@@ -283,12 +371,12 @@ function loadAdminOrders() {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><strong>${o.orderId}</strong></td>
-        <td>${o.clientName}<br><small style="color:#94a3b8;">${o.clientEmail}</small></td>
+        <td>${o.clientName}<br><small style="color:#fda4af;">${o.clientEmail}</small></td>
         <td>${o.plan}</td>
-        <td><code style="background:#07090e; padding:2px 5px; border-radius:4px; color:#38bdf8;">${o.utr}</code></td>
+        <td><code style="background:#090305; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr}</code></td>
         <td>₹${o.amount}</td>
         <td>
-          ${o.promoterStaff !== "NONE" ? `<span style="color:#10b981; font-weight:bold;">${o.promoterStaff}</span><br><small style="color:#f59e0b;">(Profit: ₹${o.staffProfit})</small>` : '<span style="color:#64748b;">Direct</span>'}
+          ${o.promoterStaff !== "NONE" ? `<strong style="color:#10b981;">${o.promoterStaff}</strong><br><small style="color:#ff4d64;">(10% Profit: ₹${o.staffProfit})</small>` : '<span style="color:#64748b;">Direct</span>'}
         </td>
         <td><span class="badge-status badge-${o.status}">${o.status}</span></td>
         <td>
@@ -302,7 +390,11 @@ function loadAdminOrders() {
 }
 
 function updateOrderStatus(id, newStatus) {
-  firebase.database().ref('orders/' + id).update({ status: newStatus }).then(() => {
-    alert(`Order ${id} marked as ${newStatus}!`);
+  firebase.database().ref('orders/' + id).update({
+    status: newStatus
+  }).then(() => {
+    alert(`Order ${id} successfully updated to ${newStatus}!`);
+  }).catch((err) => {
+    alert("Update failed: " + err.message);
   });
-    }
+}
