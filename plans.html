@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources & Plans | Spark Community</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">⚡ Spark <span>Community</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="plans.html" class="active">Resources & Plans</a></li>
+      <li><a href="track.html">Track Order</a></li>
+      <li><a href="admin.html">Staff Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1 class="page-title">Select Your Plan & Services</h1>
+
+    <div class="pricing-grid">
+      <!-- Plan 1 -->
+      <div class="plan-card">
+        <div class="badge">Most Popular</div>
+        <h3>Spark Bot (Full Access)</h3>
+        <div class="price">₹250 <span>/ Monthly</span></div>
+        <ul>
+          <li>✔ All Premium Features Included</li>
+          <li>✔ Free Discord Setup</li>
+          <li>✔ 24/7 Staff Availability</li>
+          <li>✔ <strong>Permanent Data Save</strong></li>
+        </ul>
+        <button class="btn primary-btn" onclick="openOrderModal('Spark Bot (Full Access)', 250)">Order Now</button>
+      </div>
+
+      <!-- Plan 2 -->
+      <div class="plan-card">
+        <h3>Spark Bot (Per Feature)</h3>
+        <div class="price">₹20 <span>/ feature / month</span></div>
+        <ul>
+          <li>✔ Select only what you need</li>
+          <li>✔ ₹50 One-time Discord Setup</li>
+          <li>✔ <strong>Permanent Data Save</strong></li>
+          <li>✔ Full Ticket Support</li>
+        </ul>
+        <div class="feature-selector">
+          <label>Number of features:</label>
+          <input type="number" id="featureCount" min="1" max="15" value="1" onchange="calculatePerFeaturePrice()">
+          <p id="perFeatureTotal">Total: ₹70 (₹20 + ₹50 setup)</p>
+        </div>
+        <button class="btn primary-btn" onclick="orderPerFeature()">Order Custom Features</button>
+      </div>
+
+      <!-- Plan 3: Custom Bot -->
+      <div class="plan-card custom-plan">
+        <h3>Custom Bot Creation</h3>
+        <div class="price">₹500 <span>Base Creation Fee</span></div>
+        <ul>
+          <li>✔ Tailor-made bot as per your exact specs</li>
+          <li>✔ Direct developer coordination</li>
+        </ul>
+        <div class="panel-options">
+          <label>Hosting / Panel Option:</label>
+          <select id="hostingOption" onchange="calculateCustomPrice()">
+            <option value="0">Self Hosted (Apna VPS / Panel) - ₹0/mo</option>
+            <option value="300">Spark Community 24/7 Panel - ₹300/mo</option>
+          </select>
+          <p id="customTotal">Total: ₹500</p>
+        </div>
+        <button class="btn primary-btn" onclick="orderCustomBot()">Build Custom Bot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Modal with Payment Gateway / QR -->
+  <div id="orderModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeOrderModal()">&times;</span>
+      <h2>Checkout & Order Details</h2>
+      <form id="orderForm" onsubmit="submitOrder(event)">
+        <input type="hidden" id="selectedPlan">
+        <input type="hidden" id="orderAmount">
+
+        <label>Selected Plan:</label>
+        <p id="modalPlanName" class="highlight-text"></p>
+
+        <label>Amount Payable:</label>
+        <p id="modalAmount" class="highlight-price"></p>
+
+        <label for="clientName">Your Name / Discord Handle:</label>
+        <input type="text" id="clientName" placeholder="e.g., FZ / @fzboy786" required>
+
+        <label for="clientEmail">Your Email (Invoice & updates yahan ayenge):</label>
+        <input type="email" id="clientEmail" placeholder="yourname@gmail.com" required>
+
+        <label for="botRequirements">Bot Requirements / Server ID:</label>
+        <textarea id="botRequirements" rows="3" placeholder="Features jo chahiye ya server link..." required></textarea>
+
+        <!-- Payment Section -->
+        <div class="payment-box">
+          <h4>Payment Instructions</h4>
+          <p>UPI ID: <code>fzboy2008@okaxis</code> (Ya scan karke exact pay karein)</p>
+          <p class="warning">Payment Gateway verification ke liye niche 12-digit UPI / UTR Transaction ID enter karein:</p>
+          <input type="text" id="utrNumber" placeholder="Enter 12-Digit UTR / Transaction ID" minlength="10" required>
+        </div>
+
+        <button type="submit" class="btn primary-btn submit-btn">Submit Order & Verify UTR</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+            
