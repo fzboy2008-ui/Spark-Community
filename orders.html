@@ -8,74 +8,91 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+  <!-- Navigation Drawer Backdrop -->
+  <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
+
+  <!-- Navbar with 3-Lines -->
   <nav class="navbar">
-    <div class="logo">⚡ Spark <span>Community</span></div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="plans.html">Plans & Shop</a></li>
-      <li><a href="orders.html" class="active">Orders & Invoices</a></li>
-      <li><a href="admin.html" class="btn-staff">Staff Login</a></li>
+    <a href="index.html" class="logo">⚡ Spark <span>Community</span></a>
+    <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul class="nav-links" id="navDrawer">
+      <button class="close-menu-btn" onclick="toggleNav()">&times;</button>
+      <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="plans.html"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
+      <li><a href="orders.html" class="active"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
+      <li><a href="admin.html" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
     </ul>
   </nav>
 
   <div class="container tracker-page">
     <h1 class="page-title">Track Your Order & Invoice</h1>
+    
     <div class="track-search-bar">
       <input type="text" id="searchOrderId" placeholder="Enter Order ID (e.g. SPK-9532)">
       <button class="btn primary-btn" onclick="trackOrder()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
     </div>
 
     <!-- Soft Host inspired Invoice container -->
-    <div id="invoiceContainer" class="invoice-wrapper" style="display:none;">
-      <div class="invoice-header">
+    <div id="invoiceContainer" style="display:none; background:#14070a; border:1px solid rgba(239,68,68,0.3); border-radius:14px; padding:1.8rem; margin-top:1.5rem; box-shadow: 0 0 25px rgba(239,68,68,0.2);">
+      
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid #3c1218; padding-bottom:1rem; margin-bottom:1.2rem; flex-wrap:wrap; gap:10px;">
         <div>
-          <h2>Invoice #<span id="invNumber"></span></h2>
-          <div class="badge-status" id="invStatusBadge">Processing</div>
+          <h2 style="font-size:1.4rem; color:#fff;">Invoice #<span id="invNumber"></span></h2>
+          <div class="badge-status" id="invStatusBadge" style="margin-top:4px;">Processing</div>
         </div>
-        <button class="btn secondary-btn" onclick="window.print()"><i class="fa-solid fa-download"></i> Download PDF</button>
+        <button class="btn secondary-btn" onclick="window.print()"><i class="fa-solid fa-download"></i> Download PDF[span_3](start_span)[span_3](end_span)</button>
       </div>
 
-      <div class="invoice-details-grid">
+      <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:12px; font-size:0.88rem;">
         <div>
-          <h4>ISSUED TO:</h4>
-          <p id="invCustomerName">Client Name</p>
-          <p id="invCustomerEmail">client@mail.com</p>
+          <h4 style="color:#fda4af; margin-bottom:3px;">ISSUED TO:[span_4](start_span)[span_4](end_span)</h4>
+          <p id="invCustomerName" style="font-weight:bold; color:#fff;">Client Name</p>
+          <p id="invCustomerEmail" style="color:#fecdd3;">client@mail.com</p>
         </div>
-        <div class="text-right">
-          <p><strong>Invoice Date:</strong> <span id="invDate"></span></p>
-          <p><strong>Payment Method:</strong> Paytm UPI (6006283334@ptyes)</p>
-          <p><strong>UTR:</strong> <code id="invUtr"></code></p>
+        <div style="text-align:right;">
+          <p><strong>Invoice Date:</strong> <span id="invDate"></span>[span_5](start_span)[span_5](end_span)</p>
+          <p><strong>Payment:</strong> Paytm UPI (6006283334@ptyes)[span_6](start_span)[span_6](end_span)</p>
+          <p><strong>UTR:</strong> <code id="invUtr" style="background:#090305; padding:2px 6px; border-radius:4px; color:#ff4d64;"></code></p>
         </div>
       </div>
 
-      <table class="invoice-table">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Details / Features</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td id="invItemName">Spark Bot</td>
-            <td id="invItemDetails">Features list...</td>
-            <td>₹<span id="invItemPrice">0</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="invoice-total-section">
-        <p>Subtotal: ₹<span id="invSubTotal">0</span></p>
-        <p id="invDiscountLine" style="color:#10b981; display:none;">Coupon Discount: -₹<span id="invDiscountVal">0</span></p>
-        <h3>Total: ₹<span id="invFinalTotal">0</span></h3>
+      <div class="table-responsive">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Details / Features</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="invItemName">Spark Bot</td>
+              <td id="invItemDetails">Features list...</td>
+              <td>₹<span id="invItemPrice">0</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="invoice-footer-msg" id="invInstructionBox">
-        Order verify hone me thoda waqt lag sakta hai. Jaise hi admin approve karenge, aapko mail trigger hoga.
+      <div style="text-align:right; border-top:1px solid #3c1218; padding-top:1rem; margin-top:1.2rem;">
+        <p style="color:#fda4af; font-size:0.9rem;">Subtotal: ₹<span id="invSubTotal">0</span></p>
+        <h3 style="font-size:1.4rem; color:#fff; margin-top:4px;">Total: ₹<span id="invFinalTotal">0</span></h3>
+      </div>
+
+      <div id="invInstructionBox" style="background:#090305; border:1px solid #3c1218; padding:12px; border-radius:8px; text-align:center; color:#fda4af; font-size:0.85rem; margin-top:1.2rem;">
+        Order verification pending under Admin (fzboy2008@gmail.com).
       </div>
     </div>
   </div>
+
+  <footer>
+    <p>© Spark Community. All rights reserved.</p>
+    <p style="margin-top: 4px;">Support: <a href="mailto:fzboy2008@gmail.com">fzboy2008@gmail.com</a></p>
+  </footer>
 
   <!-- Firebase Compatibility Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
