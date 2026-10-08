@@ -2,50 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spark Admin Panel</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="container admin-container">
-    <h1>Spark Community Staff Panel</h1>
     
-    <div id="authSection">
-      <p>Is page ka access sirf authorized admin accounts ko hai:</p>
-      <button class="btn primary-btn" onclick="loginWithGoogle()"><i class="fa-brands fa-google"></i> Sign In With Google</button>
-      <p id="authError" style="color:red; margin-top:10px;"></p>
+    <!-- Login Gate -->
+    <div id="loginGate">
+      <div class="login-card">
+        <div class="logo">⚡ Spark <span>Admin</span></div>
+        <p style="margin: 1rem 0; color: #94a3b8;">Is page ka access sirf authorized admin accounts ko hai.</p>
+        <button class="btn primary-btn full-w" onclick="googleAdminLogin()">
+          <i class="fa-brands fa-google"></i> Sign In With Google
+        </button>
+        <p id="adminErrorMsg" style="color:#ef4444; margin-top:10px; font-size:0.9rem;"></p>
+      </div>
     </div>
 
-    <div id="dashboardSection" style="display:none;">
-      <div class="admin-header">
-        <h3>Welcome, <span id="adminEmailDisplay"></span></h3>
-        <button class="btn cancel-btn" onclick="logoutAdmin()">Logout</button>
+    <!-- Admin Dashboard Panel -->
+    <div id="adminPanel" style="display:none;">
+      <div class="admin-topbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:1px solid #1e293b; padding-bottom:1rem;">
+        <div>
+          <h2>Spark Staff Control Panel</h2>
+          <p style="color:#94a3b8;">Logged in as: <strong id="currentAdminEmail" style="color:#38bdf8;"></strong></p>
+        </div>
+        <button class="btn secondary-btn" onclick="logoutAdmin()">Logout</button>
       </div>
 
-      <h2>Pending & Recent Orders</h2>
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Plan</th>
-            <th>Amount</th>
-            <th>UTR Number</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="ordersTableBody">
-          <!-- Orders dynamically load honge -->
-        </tbody>
-      </table>
+      <h3>Pending & Recent Orders</h3>
+      <div style="overflow-x:auto;">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Plan</th>
+              <th>UTR Number</th>
+              <th>Amount</th>
+              <th>Coupon</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersListTable">
+            <!-- Dynamic Realtime Orders script.js se render honge -->
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
 
-    <!-- Firebase Compatibility Scripts -->
+  <!-- Firebase Compatibility Scripts & Main Logic -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
