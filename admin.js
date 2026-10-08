@@ -1,74 +1,60 @@
-// Firebase configuration yahan add karein (Firebase Console -> Project Settings)
-const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "spark-community.firebaseapp.com",
-  databaseURL: "https://spark-community-default-rtdb.firebaseio.com",
-  projectId: "spark-community"
-};
-firebase.initializeApp(firebaseConfig);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | Spark Community</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container admin-container">
+    <div id="loginGate">
+      <div class="login-card">
+        <div class="logo">⚡ Spark <span>Admin</span></div>
+        <p>Restricted access for verified staff accounts only.</p>
+        <button class="btn primary-btn full-w" onclick="googleAdminLogin()">
+          <i class="fa-brands fa-google"></i> Sign in with Google
+        </button>
+        <p id="adminErrorMsg" class="error-text"></p>
+      </div>
+    </div>
 
-const allowedAdmins = [
-  "fzboy2008@gmail.com",
-  "fouzanwani2008@gmail.com"
-];
+    <div id="adminPanel" style="display:none;">
+      <div class="admin-topbar">
+        <h2>Spark Staff Control Panel</h2>
+        <div>
+          <span id="currentAdminEmail"></span>
+          <button class="btn secondary-btn" onclick="logoutAdmin()">Logout</button>
+        </div>
+      </div>
 
-function loginWithGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider)
-    .then((result) => {
-      const email = result.user.email;
-      if (allowedAdmins.includes(email)) {
-        document.getElementById('authSection').style.display = 'none';
-        document.getElementById('dashboardSection').style.display = 'block';
-        document.getElementById('adminEmailDisplay').innerText = email;
-        loadOrders();
-      } else {
-        firebase.auth().signOut();
-        document.getElementById('authError').innerText = "Access Denied: Aapka email authorized admin list me nahi hai.";
-      }
-    })
-    .catch((error) => {
-      document.getElementById('authError').innerText = error.message;
-    });
-}
+      <h3>Recent Client Orders</h3>
+      <div class="table-responsive">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Plan</th>
+              <th>UTR</th>
+              <th>Amount</th>
+              <th>Coupon</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersListTable">
+            <!-- Dynamic Realtime Orders -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-function logoutAdmin() {
-  firebase.auth().signOut().then(() => {
-    location.reload();
-  });
-}
-
-function loadOrders() {
-  const tableBody = document.getElementById('ordersTableBody');
-  firebase.database().ref('orders').on('value', (snapshot) => {
-    tableBody.innerHTML = '';
-    const orders = snapshot.val();
-    if(!orders) return;
-
-    Object.keys(orders).forEach((id) => {
-      const item = orders[id];
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${item.orderId}</td>
-        <td>${item.clientName} (${item.clientEmail})</td>
-        <td>${item.plan}</td>
-        <td>₹${item.amount}</td>
-        <td><code>${item.utr}</code></td>
-        <td><span class="status-badge status-${item.status}">${item.status}</span></td>
-        <td>
-          <button class="approve-btn" onclick="updateStatus('${item.orderId}', 'Approved')">Approve</button>
-          <button class="cancel-btn" onclick="updateStatus('${item.orderId}', 'Cancelled')">Cancel</button>
-        </td>
-      `;
-      tableBody.appendChild(tr);
-    });
-  });
-}
-
-function updateStatus(orderId, newStatus) {
-  firebase.database().ref('orders/' + orderId).update({
-    status: newStatus
-  }).then(() => {
-    alert(`Order ${orderId} marked as ${newStatus}!`);
-  });
-}
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+  
