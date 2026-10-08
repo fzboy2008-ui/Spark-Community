@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice — Spark Community</title><link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="nav"><a class="brand" href="index.html"><span>✦</span> SPARK <b>COMMUNITY</b></a><nav><a href="index.html">Home</a><a href="services.html">Services</a><a href="order.html">Order</a><a href="status.html">Order Status</a><a class="nav-btn" href="https://discord.gg/h5ejJAabPv" target="_blank">Discord</a></nav></header>
+<main><section class="invoice" id="invoice"><div class="invoice-top"><div><div class="brand big">✦ SPARK COMMUNITY</div><p>Custom Bots • Discord Setup • Development • Hosting</p></div><div class="invoice-meta"><b id="invId">INVOICE</b><span id="invDate"></span><span id="invStatus">PROCESSING</span></div></div>
+<div class="bill-grid"><div><small>BILLED TO</small><b id="invName">Client</b><span id="invEmail">—</span><span id="invDiscord">—</span></div><div><small>CONTACT</small><b>fzboy2008@gmail.com</b><span>Discord tickets available</span></div></div>
+<table><thead><tr><th>DESCRIPTION</th><th>QTY</th><th>AMOUNT</th></tr></thead><tbody id="items"></tbody></table>
+<div class="invoice-total"><span>Total</span><b id="invTotal">₹0</b></div>
+<div class="invoice-note"><b>Billing Note</b><p>Order approval/cancellation is controlled through the official Spark Community billing email. Until approved, the order remains Processing.</p></div>
+</div><div class="invoice-actions"><button class="btn primary" onclick="window.print()">Print / Save PDF</button><a class="btn ghost" href="status.html">Back to Status</a></div></main>
+<footer><small>© 2026 Spark Community.</small></footer>
+<script>
+const id=new URLSearchParams(location.search).get('id');
+const d=JSON.parse(localStorage.getItem('sparkOrder_'+id)||'null');
+if(d){
+ document.getElementById('invId').textContent=d.id;
+ document.getElementById('invDate').textContent=d.date;
+ document.getElementById('invStatus').textContent=d.status;
+ document.getElementById('invName').textContent=d.name;
+ document.getElementById('invEmail').textContent=d.email;
+ document.getElementById('invDiscord').textContent=d.discord;
+ document.getElementById('invTotal').textContent=d.total;
+ document.getElementById('items').innerHTML='<tr><td>'+d.service+'</td><td>1</td><td>'+d.total+'</td></tr>';
+}
+</script>
+</body></html>

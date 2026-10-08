@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Status — Spark Community</title><link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="nav"><a class="brand" href="index.html"><span>✦</span> SPARK <b>COMMUNITY</b></a><nav><a href="index.html">Home</a><a href="services.html">Services</a><a href="order.html">Order</a><a class="active" href="status.html">Order Status</a><a class="nav-btn" href="https://discord.gg/h5ejJAabPv" target="_blank">Discord</a></nav></header>
+<main><section class="page-head"><div class="eyebrow">ORDER TRACKING</div><h1>Check your order.</h1><p>Enter the Order ID from your confirmation email.</p></section>
+<section class="status-card"><label>Order ID<input id="orderId" placeholder="SPK-2026-XXXX"></label><button class="btn primary" onclick="checkStatus()">Check Status</button><div id="statusResult"></div><p class="muted">If you need help, contact <a href="mailto:fzboy2008@gmail.com">fzboy2008@gmail.com</a> or open a Discord ticket.</p></section></main>
+<footer><div><b>✦ SPARK COMMUNITY</b></div><small>© 2026 Spark Community.</small></footer>
+<script>
+function checkStatus(){
+ const id=document.getElementById('orderId').value.trim();
+ const box=document.getElementById('statusResult');
+ if(!id){box.innerHTML='<div class="alert">Please enter an Order ID.</div>';return;}
+ const data=JSON.parse(localStorage.getItem('sparkOrder_'+id)||'null');
+ if(!data){box.innerHTML='<div class="alert">Order not found in this browser. The live version will check the backend database here.</div>';return;}
+ box.innerHTML='<div class="status-live"><span class="status-dot"></span><div><b>'+data.status+'</b><small>'+data.service+' · '+data.id+'</small></div></div><a class="btn ghost full" href="invoice.html?id='+encodeURIComponent(data.id)+'">View Invoice</a>';
+}
+</script>
+</body></html>

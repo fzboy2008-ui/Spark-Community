@@ -1,0 +1,31 @@
+pages:
+  page1:
+    items:
+      '1':
+        material: ROTTEN_FLESH
+        buy: 20
+        sell: 2
+      '2':
+        material: BONE
+        buy: 25
+        sell: 3
+      '3':
+        material: STRING
+        buy: 30
+        sell: 4
+      '4':
+        material: SPIDER_EYE
+        buy: 35
+        sell: 5
+      '5':
+        material: GUNPOWDER
+        buy: 50
+        sell: 8
+      '6':
+        material: BLAZE_ROD
+        buy: 200
+        sell: 30
+      '7':
+        material: ENDER_PEARL
+        buy: 400
+        sell: 50
