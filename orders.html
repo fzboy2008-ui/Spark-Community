@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders & Invoices | Spark Community</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">⚡ Spark <span>Community</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="plans.html">Plans & Shop</a></li>
+      <li><a href="orders.html" class="active">Orders & Invoices</a></li>
+      <li><a href="admin.html" class="btn-staff">Staff Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container tracker-page">
+    <h1 class="page-title">Track Your Order & Invoice</h1>
+    <div class="track-search-bar">
+      <input type="text" id="searchOrderId" placeholder="Enter Order ID (e.g. SPK-9532)">
+      <button class="btn primary-btn" onclick="trackOrder()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    </div>
+
+    <!-- Soft Host inspired Invoice container -->
+    <div id="invoiceContainer" class="invoice-wrapper" style="display:none;">
+      <div class="invoice-header">
+        <div>
+          <h2>Invoice #<span id="invNumber"></span></h2>
+          <div class="badge-status" id="invStatusBadge">Processing</div>
+        </div>
+        <button class="btn secondary-btn" onclick="window.print()"><i class="fa-solid fa-download"></i> Download PDF</button>
+      </div>
+
+      <div class="invoice-details-grid">
+        <div>
+          <h4>ISSUED TO:</h4>
+          <p id="invCustomerName">Client Name</p>
+          <p id="invCustomerEmail">client@mail.com</p>
+        </div>
+        <div class="text-right">
+          <p><strong>Invoice Date:</strong> <span id="invDate"></span></p>
+          <p><strong>Payment Method:</strong> Paytm UPI (6006283334@ptyes)</p>
+          <p><strong>UTR:</strong> <code id="invUtr"></code></p>
+        </div>
+      </div>
+
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Details / Features</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="invItemName">Spark Bot</td>
+            <td id="invItemDetails">Features list...</td>
+            <td>₹<span id="invItemPrice">0</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="invoice-total-section">
+        <p>Subtotal: ₹<span id="invSubTotal">0</span></p>
+        <p id="invDiscountLine" style="color:#10b981; display:none;">Coupon Discount: -₹<span id="invDiscountVal">0</span></p>
+        <h3>Total: ₹<span id="invFinalTotal">0</span></h3>
+      </div>
+
+      <div class="invoice-footer-msg" id="invInstructionBox">
+        Order verify hone me thoda waqt lag sakta hai. Jaise hi admin approve karenge, aapko mail trigger hoga.
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+                                                   
