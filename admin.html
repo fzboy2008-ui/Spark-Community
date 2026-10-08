@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spark Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="container admin-container">
+    <h1>Spark Community Staff Panel</h1>
+    
+    <div id="authSection">
+      <p>Is page ka access sirf authorized admin accounts ko hai:</p>
+      <button class="btn primary-btn" onclick="loginWithGoogle()"><i class="fa-brands fa-google"></i> Sign In With Google</button>
+      <p id="authError" style="color:red; margin-top:10px;"></p>
+    </div>
+
+    <div id="dashboardSection" style="display:none;">
+      <div class="admin-header">
+        <h3>Welcome, <span id="adminEmailDisplay"></span></h3>
+        <button class="btn cancel-btn" onclick="logoutAdmin()">Logout</button>
+      </div>
+
+      <h2>Pending & Recent Orders</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Plan</th>
+            <th>Amount</th>
+            <th>UTR Number</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTableBody">
+          <!-- Orders dynamically load honge -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="admin.js"></script>
+</body>
+</html>
+        
