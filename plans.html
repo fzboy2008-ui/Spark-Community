@@ -1,4 +1,140 @@
-  <!-- Paytm Intent & QR Checkout Modal -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plans & Resources | Spark Community</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Instant Fallback & Modal Guard */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 12px;
+      overflow-y: auto;
+    }
+    .modal-content {
+      background: #110507;
+      border: 1.5px solid #ff2a44;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 400px;
+      padding: 1.25rem;
+      position: relative;
+      box-shadow: 0 0 30px rgba(255, 42, 68, 0.4);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .qr-frame {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 8px auto;
+      max-width: 170px;
+    }
+    .qr-image {
+      width: 100%;
+      max-width: 155px;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">⚡ Spark <span>Community</span></div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="plans.html" class="active">Plans & Shop</a></li>
+      <li><a href="orders.html">Orders & Invoices</a></li>
+      <li><a href="admin.html" class="btn-staff">Staff Login</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1 class="page-title">Choose Your Spark Service</h1>
+
+    <!-- 3 Main Packages -->
+    <div class="pricing-grid">
+      <!-- Plan 1 -->
+      <div class="pricing-card">
+        <div class="tag">Complete Suite</div>
+        <h2>Spark Bot (All-In-One)</h2>
+        <div class="price">₹250 <span>/ Month</span></div>
+        <ul class="features-list">
+          <li>✔ All 17+ Features Included</li>
+          <li>✔ Free Discord Setup</li>
+          <li>✔ Staff Available Anytime</li>
+          <li>✔ <strong>Permanent Data Save Guarantee</strong></li>
+        </ul>
+        <button class="btn primary-btn full-w" onclick="selectCorePlan('Spark Bot (All Features)', 250)">Order Full Bot</button>
+      </div>
+
+      <!-- Plan 2 -->
+      <div class="pricing-card">
+        <div class="tag blue">Customizable</div>
+        <h2>Per-Feature Plan</h2>
+        <div class="price">₹20 <span>/ Feature / Month</span></div>
+        <ul class="features-list">
+          <li>✔ ₹50 One-Time Discord Setup</li>
+          <li>✔ Permanent Data Save Guarantee</li>
+          <li>✔ Select only what you need below</li>
+        </ul>
+        <a href="#feature-selector-box" class="btn secondary-btn full-w">Select Features Below</a>
+      </div>
+
+      <!-- Plan 3 -->
+      <div class="pricing-card">
+        <div class="tag amber">Custom Development</div>
+        <h2>Custom Bot Creation</h2>
+        <div class="price">₹500 <span>Base Creation Fee</span></div>
+        <ul class="features-list">
+          <li>✔ Custom Code as per your Server rules</li>
+          <li>✔ Direct Discord Developer support</li>
+          <li>✔ <strong>Panel Choice:</strong> VPS (₹0) / Spark 24/7 (₹300/mo)</li>
+        </ul>
+        <div class="custom-panel-select" style="margin-bottom:1rem;">
+          <label style="font-size:0.8rem; color:#fda4af;">Choose Panel:</label>
+          <select id="customPanelSelect" onchange="updateCustomTotal()" style="width:100%; margin-top:4px;">
+            <option value="0">Self Hosted (Client Panel/VPS) - ₹0</option>
+            <option value="300">Spark 24/7 Hosting Panel - ₹300/mo</option>
+          </select>
+          <div class="calculated-price" id="customTotalDisplay" style="margin-top:6px; color:#ff4d64; font-weight:bold;">Total: ₹500</div>
+        </div>
+        <button class="btn primary-btn full-w" onclick="selectCustomPlan()">Order Custom Bot</button>
+      </div>
+    </div>
+
+    <!-- 17 Features Checklist Section -->
+    <section id="feature-selector-box" class="feature-picker-box">
+      <h2 style="font-size:1.3rem; margin-bottom:4px;">Items Available in Per-Feature Category</h2>
+      <p style="color:#fda4af; font-size:0.85rem; margin-bottom:1rem;">Select one or multiple items below (₹20 per item + ₹50 setup):</p>
+      
+      <div class="features-grid-checkbox" id="featuresList">
+        <!-- 17 features dynamically render honge -->
+      </div>
+
+      <div class="feature-summary-bar">
+        <div style="font-size:0.9rem;">
+          <span>Selected: <strong id="selectedCount" style="color:#ff334b;">0</strong></span> | 
+          <span>Items: ₹<strong id="itemsPrice">0</strong></span> + 
+          <span>Setup: ₹<strong id="setupPrice">0</strong></span> = 
+          <span style="color:#10b981; font-weight:bold;">Total: ₹<strong id="perFeatureTotal">0</strong></span>
+        </div>
+        <button class="btn primary-btn" id="btnOrderFeatures" onclick="checkoutFeatures()" disabled>Order Selected Features</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Paytm QR Checkout Modal -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -8,7 +144,7 @@
           <span>⚡ SPARK VIP CHECKOUT</span>
           <div class="amount-tag">Payable: ₹<span id="mFinalPrice">0</span></div>
         </div>
-        <p style="font-size:0.8rem; color:#94a3b8;" id="mPlanName">Selected Plan</p>
+        <p style="font-size:0.8rem; color:#fda4af;" id="mPlanName">Selected Plan</p>
       </div>
 
       <!-- Paytm QR Display -->
@@ -16,25 +152,27 @@
         <div class="qr-frame">
           <img src="qr.jpg" alt="Paytm QR Code" class="qr-image">
         </div>
-        <div class="upi-address">UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)</div>
+        <div class="upi-address" style="font-size:0.8rem; color:#fecdd3; margin:4px 0 8px;">
+          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)
+        </div>
         
-        <!-- Direct App Trigger Button -->
+        <!-- Mobile Deep Link Button -->
         <a id="paytmDeepLink" href="#" class="upi-app-btn">
           <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe
         </a>
       </div>
 
-      <!-- Staff Referral Code Box (No Client Discount, 10% Staff Profit) -->
-      <div style="margin: 12px 0; background: #07090e; padding: 10px; border-radius: 8px; border: 1px solid #1a2333;">
-        <label style="font-size: 0.75rem; color:#94a3b8;">Staff Referral / Promoter Code (Optional):</label>
+      <!-- Staff Referral Code Box -->
+      <div style="margin: 10px 0; background: #07090e; padding: 10px; border-radius: 8px; border: 1px solid #3c1218;">
+        <label style="font-size: 0.75rem; color:#fda4af;">Staff Promoter Code (Optional):</label>
         <div style="display:flex; gap:6px; margin-top:4px;">
-          <input type="text" id="couponInput" placeholder="e.g. Sprk-731-petls" style="flex:1; padding:6px; background:#0e121d; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+          <input type="text" id="couponInput" placeholder="e.g. Sprk-731-petls" style="flex:1; padding:6px; background:#110507; border:1px solid #45131a; color:#fff; border-radius:4px; font-size:0.8rem;">
           <button type="button" class="btn secondary-btn" style="padding:4px 10px; font-size:0.8rem;" onclick="applyStaffCoupon()">Verify</button>
         </div>
         <p id="couponMsg" style="font-size: 0.75rem; margin-top: 4px;"></p>
       </div>
 
-      <!-- Order Form -->
+      <!-- Checkout Form -->
       <form id="orderCheckoutForm" onsubmit="handleOrderSubmission(event)">
         <div class="form-group">
           <label>Your Name / Discord Tag:</label>
@@ -49,14 +187,21 @@
           <textarea id="custDetails" rows="2" placeholder="Bot features details..." required></textarea>
         </div>
         <div class="form-group">
-          <label style="color:#00baf2; font-weight:bold;">Enter 12-Digit UPI / UTR Reference No.:</label>
+          <label style="color:#ff4d64; font-weight:bold;">Enter 12-Digit UPI / UTR Reference No.:</label>
           <input type="text" id="utrCode" placeholder="Enter Transaction UTR after payment" minlength="10" required>
         </div>
 
-        <button type="submit" class="btn primary-btn full-w" style="margin-top:8px;">
+        <button type="submit" class="btn primary-btn full-w" style="margin-top:6px;">
           <i class="fa-solid fa-check-circle"></i> Confirm & Submit Order
         </button>
       </form>
     </div>
   </div>
-  
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
