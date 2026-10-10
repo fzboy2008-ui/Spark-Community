@@ -47,7 +47,7 @@ let activeCheckout = {
 };
 
 // ==========================================
-// 3. INITIALIZATION & NAVIGATION DRAWER
+// 3. INITIALIZATION & NAVIGATION LOGIC
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
   // Render 17 items inside plans.html
@@ -81,22 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("currentAdminEmail").innerText = savedStaff;
     loadAdminOrders();
   }
-
-  // Auto-close Drawer on Link Click
-  const navItems = document.querySelectorAll('#navDrawer a');
-  navItems.forEach(link => {
-    link.addEventListener('click', () => {
-      const drawer = document.getElementById('navDrawer');
-      const backdrop = document.getElementById('navBackdrop');
-      if (drawer && backdrop) {
-        drawer.classList.remove('active');
-        backdrop.classList.remove('active');
-      }
-    });
-  });
 });
 
-// Smooth Toggle for 3-Lines Navbar
+// Toggle Drawer Function
 function toggleNav() {
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navBackdrop');
@@ -104,6 +91,17 @@ function toggleNav() {
     drawer.classList.toggle('active');
     backdrop.classList.toggle('active');
   }
+}
+
+// Instant Navigation on Touch
+function navigateTo(url) {
+  const drawer = document.getElementById('navDrawer');
+  const backdrop = document.getElementById('navBackdrop');
+  if (drawer && backdrop) {
+    drawer.classList.remove('active');
+    backdrop.classList.remove('active');
+  }
+  window.location.href = url;
 }
 
 // Category Tabs Switcher (Bots, Minecraft, Templates)
@@ -386,4 +384,4 @@ function deleteOrder(id) {
       alert(`Order ${id} deleted successfully!`);
     });
   }
-}
+  }
