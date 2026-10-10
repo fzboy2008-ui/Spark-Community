@@ -12,7 +12,6 @@ const firebaseConfig = {
   measurementId: "G-FTSXDP16LP"
 };
 
-// Plain browser compatibility initialization
 if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -21,55 +20,46 @@ if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
 // 2. CONSTANTS & SYSTEM DATA
 // ==========================================
 const availableFeatures = [
-  "Welcome System",
-  "Ticket System",
-  "Store System",
-  "Invite System",
-  "Giveaway System",
-  "Say System",
-  "Goodbye System",
-  "Auto Moderation",
-  "Anti-Nuke",
-  "Auto Response",
-  "Server Stats",
-  "VC Generator",
-  "Staff Application System",
-  "YouTube Upload Notifications",
-  "Onboarding Buttons",
-  "Nitro Emoji Converter",
-  "Custom Bot Logo"
+  "Welcome System", "Ticket System", "Store System", "Invite System",
+  "Giveaway System", "Say System", "Goodbye System", "Auto Moderation",
+  "Anti-Nuke", "Auto Response", "Server Stats", "VC Generator",
+  "Staff Application System", "YouTube Upload Notifications",
+  "Onboarding Buttons", "Nitro Emoji Converter", "Custom Bot Logo"
 ];
 
-// Staff Affiliate Mapping (10% Commission to Staff)
-const staffAffiliateMap = {
-  "Sprk-731-petls": "Darequeen",
-  "Sprk-981-glxy": "Galaxy Promoter",
-  "Sprk-761-vortx": "Vortex Promoter",
-  "Sprk-720-bloom": "Bloom Promoter",
-  "Sprk-719-sprky": "Sparky Promoter"
+// 10 Active 10% Discount Coupons
+const validCoupons = [
+  "spark-core-4341",
+  "spark-core-4342",
+  "spark-core-4343",
+  "spark-core-4344",
+  "spark-core-4345",
+  "spark-core-4346",
+  "spark-core-4347",
+  "spark-core-4348",
+  "spark-core-4349",
+  "spark-core-4340"
+];
+
+// Authorized Staff Accounts & Passwords
+const authorizedStaff = {
+  "fzboy2008@gmail.com": "Fzboy786!",
+  "dareque3n@gmail.com": "Fzboy786!"
 };
 
-// Authorized Admin Accounts
-const authorizedAdminEmails = [
-  "fzboy2008@gmail.com",
-  "fouzanwani2008@gmail.com"
-];
-
-// Active Checkout State
 let activeCheckout = {
   plan: '',
   details: '',
-  price: 0,
-  promoterCode: "NONE",
-  promoterStaff: "NONE",
-  staffCommission: 0
+  rawPrice: 0,
+  finalPrice: 0,
+  appliedCoupon: "NONE"
 };
 
 // ==========================================
-// 3. PAGE INITIALIZATION (DOM LOAD)
+// 3. INITIALIZATION & NAV
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Render 17 items inside plans.html
+  // Render 17 items with ₹22 rate
   const featuresContainer = document.getElementById("featuresList");
   if (featuresContainer) {
     featuresContainer.innerHTML = "";
@@ -78,13 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
       label.className = "feature-item-label";
       label.innerHTML = `
         <input type="checkbox" value="${feat}" onchange="recalculatePerFeature()">
-        <span><strong>${index + 1}.</strong> ${feat} — <em>₹20/mo</em></span>
+        <span><strong>${index + 1}.</strong> ${feat} — <em>₹22/mo</em></span>
       `;
       featuresContainer.appendChild(label);
     });
   }
 
-  // Handle URL query string in orders.html (?id=SPK-XXXX)
+  // Handle URL query string (?id=SPK-XXXX)
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -92,22 +82,16 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
-  // Check auth state persistence for admin panel
-  if (typeof firebase !== 'undefined' && firebase.auth && document.getElementById('loginGate')) {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user && authorizedAdminEmails.includes(user.email)) {
-        document.getElementById("loginGate").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-        document.getElementById("currentAdminEmail").innerText = user.email;
-        loadAdminOrders();
-      }
-    });
+  // Check Local Session for Staff Dashboard
+  const savedStaff = sessionStorage.getItem("spark_staff_email");
+  if (savedStaff && authorizedStaff[savedStaff] && document.getElementById('loginGate')) {
+    document.getElementById("loginGate").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("currentAdminEmail").innerText = savedStaff;
+    loadAdminOrders();
   }
 });
 
-// ==========================================
-// 4. NAVBAR 3-LINES TOGGLE
-// ==========================================
 function toggleNav() {
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navBackdrop');
@@ -118,81 +102,67 @@ function toggleNav() {
 }
 
 // ==========================================
-// 5. PLAN CALCULATIONS & SELECTION
+// 4. PLAN SELECTION & CHECKOUT
 // ==========================================
 function recalculatePerFeature() {
   const checked = document.querySelectorAll('#featuresList input[type="checkbox"]:checked');
   const count = checked.length;
-  const itemsPrice = count * 20;
-  const setupPrice = count > 0 ? 50 : 0;
+  const itemsPrice = count * 22; // ₹22 per feature
+  const setupPrice = count > 0 ? 50 : 0; // ₹50 one-time setup
   const total = itemsPrice + setupPrice;
 
-  const countElem = document.getElementById("selectedCount");
-  const itemsElem = document.getElementById("itemsPrice");
-  const setupElem = document.getElementById("setupPrice");
-  const totalElem = document.getElementById("perFeatureTotal");
-  const orderBtn = document.getElementById("btnOrderFeatures");
-
-  if (countElem) countElem.innerText = count;
-  if (itemsElem) itemsElem.innerText = itemsPrice;
-  if (setupElem) setupElem.innerText = setupPrice;
-  if (totalElem) totalElem.innerText = total;
-  if (orderBtn) orderBtn.disabled = count === 0;
+  document.getElementById("selectedCount").innerText = count;
+  document.getElementById("itemsPrice").innerText = itemsPrice;
+  document.getElementById("setupPrice").innerText = setupPrice;
+  document.getElementById("perFeatureTotal").innerText = total;
+  document.getElementById("btnOrderFeatures").disabled = count === 0;
 }
 
 function checkoutFeatures() {
   const checkedInputs = Array.from(document.querySelectorAll('#featuresList input[type="checkbox"]:checked'));
   const selectedNames = checkedInputs.map(cb => cb.value);
-  const total = (selectedNames.length * 20) + 50;
+  const total = (selectedNames.length * 22) + 50;
 
-  openCheckoutModal("Spark Bot (Selected Features)", selectedNames.join(", "), total);
+  openCheckoutModal("SparkCore Selected Features", selectedNames.join(", "), total);
 }
 
 function selectCorePlan(name, price) {
-  openCheckoutModal(name, "All 17+ Features Included + Free Discord Setup", price);
+  openCheckoutModal(name, "Complete Features + Free Discord Setup", price);
 }
 
 function updateCustomTotal() {
   const selectElem = document.getElementById("customPanelSelect");
   if (!selectElem) return;
   const panel = parseInt(selectElem.value, 10);
-  const total = 500 + panel;
+  const total = 550 + panel; // ₹550 Base Creation Fee
   document.getElementById("customTotalDisplay").innerText = `Total: ₹${total}`;
 }
 
 function selectCustomPlan() {
   const selectElem = document.getElementById("customPanelSelect");
   const panel = selectElem ? parseInt(selectElem.value, 10) : 0;
-  const panelText = panel === 300 ? "Spark 24/7 Hosting Panel (₹300/mo)" : "Self Hosted VPS (₹0)";
-  openCheckoutModal("Custom Bot Creation", `Base Creation: ₹500 | Hosting: ${panelText}`, 500 + panel);
+  const panelText = panel === 300 ? "SparkCore 24/7 Hosting Panel (₹300/mo)" : "Self Hosted VPS (₹0)";
+  openCheckoutModal("Custom Bot Creation", `Base Creation: ₹550 | Hosting: ${panelText}`, 550 + panel);
 }
 
-// ==========================================
-// 6. CHECKOUT MODAL & STAFF AFFILIATE
-// ==========================================
 function openCheckoutModal(planName, details, price) {
   activeCheckout = {
     plan: planName,
     details: details,
-    price: price,
-    promoterCode: "NONE",
-    promoterStaff: "NONE",
-    staffCommission: 0
+    rawPrice: price,
+    finalPrice: price,
+    appliedCoupon: "NONE"
   };
 
   document.getElementById("mPlanName").innerText = planName;
   document.getElementById("mFinalPrice").innerText = price;
 
-  // Dynamic UPI Intent Deep Link for Mobile UPI apps
-  const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=Spark%20Bot%20Payment`;
-  const deepLinkElem = document.getElementById("paytmDeepLink");
-  if (deepLinkElem) {
-    deepLinkElem.setAttribute("href", upiLink);
-  }
+  const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=SparkCore%20Payment`;
+  const deepLink = document.getElementById("paytmDeepLink");
+  if (deepLink) deepLink.setAttribute("href", upiLink);
 
   const couponInput = document.getElementById("couponInput");
   if (couponInput) couponInput.value = "";
-  
   const couponMsg = document.getElementById("couponMsg");
   if (couponMsg) couponMsg.innerText = "";
 
@@ -200,42 +170,42 @@ function openCheckoutModal(planName, details, price) {
 }
 
 function closeModal() {
-  const modal = document.getElementById("checkoutModal");
-  if (modal) modal.style.display = "none";
+  document.getElementById("checkoutModal").style.display = "none";
 }
 
-// 10% Profit to Promoter (Customer price remains intact)
-function applyStaffCoupon() {
-  const code = document.getElementById("couponInput").value.trim();
+// 10% Discount Coupon Handler
+function applyDiscountCoupon() {
+  const code = document.getElementById("couponInput").value.trim().toLowerCase();
   const msg = document.getElementById("couponMsg");
 
-  if (staffAffiliateMap[code]) {
-    const promoter = staffAffiliateMap[code];
-    const commission = Math.round(activeCheckout.price * 0.10);
+  if (validCoupons.includes(code)) {
+    const discount = Math.round(activeCheckout.rawPrice * 0.10);
+    activeCheckout.finalPrice = activeCheckout.rawPrice - discount;
+    activeCheckout.appliedCoupon = code;
 
-    activeCheckout.promoterCode = code;
-    activeCheckout.promoterStaff = promoter;
-    activeCheckout.staffCommission = commission;
+    document.getElementById("mFinalPrice").innerText = activeCheckout.finalPrice;
+
+    // Update UPI Link to discounted amount
+    const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${activeCheckout.finalPrice}&cu=INR&tn=SparkCore%20Payment`;
+    document.getElementById("paytmDeepLink").setAttribute("href", upiLink);
 
     msg.style.color = "#10b981";
-    msg.innerText = `Verified! Promoter: ${promoter} (10% Profit: ₹${commission} will be credited to promoter)`;
+    msg.innerText = `Success: 10% Discount Applied! (-₹${discount})`;
   } else {
     msg.style.color = "#ef4444";
-    msg.innerText = "Invalid promoter code! Please recheck staff codes.";
+    msg.innerText = "Invalid Coupon Code!";
   }
 }
 
 // ==========================================
-// 7. ORDER SUBMISSION (FIREBASE REALTIME DB)
+// 5. ORDER SUBMISSION
 // ==========================================
 async function handleOrderSubmission(e) {
   e.preventDefault();
 
   const submitBtn = e.target.querySelector('button[type="submit"]');
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.innerText = "Submitting Order...";
-  }
+  submitBtn.disabled = true;
+  submitBtn.innerText = "Submitting Order...";
 
   const orderId = "SPK-" + Math.floor(1000 + Math.random() * 9000);
   const now = new Date();
@@ -248,11 +218,10 @@ async function handleOrderSubmission(e) {
     plan: activeCheckout.plan,
     details: activeCheckout.details,
     requirements: document.getElementById("custDetails").value.trim(),
-    amount: activeCheckout.price,
+    rawAmount: activeCheckout.rawPrice,
+    amount: activeCheckout.finalPrice,
     utr: document.getElementById("utrCode").value.trim(),
-    promoterCode: activeCheckout.promoterCode,
-    promoterStaff: activeCheckout.promoterStaff,
-    staffProfit: activeCheckout.staffCommission,
+    coupon: activeCheckout.appliedCoupon,
     status: "Processing",
     date: formattedDate,
     timestamp: now.toISOString()
@@ -260,20 +229,17 @@ async function handleOrderSubmission(e) {
 
   try {
     await firebase.database().ref('orders/' + orderId).set(payload);
-    alert(`Order Placed Successfully!\n\nOrder ID: ${orderId}\nStatus: Processing\nVerification details have been forwarded to fzboy2008@gmail.com.`);
+    alert(`Order Placed!\nOrder ID: ${orderId}\nApproval under staff review.`);
     closeModal();
     window.location.href = `orders.html?id=${orderId}`;
-  } catch (error) {
-    alert("Error saving order: " + error.message);
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerText = "Confirm & Submit Order";
-    }
+  } catch (err) {
+    alert("Error: " + err.message);
+    submitBtn.disabled = false;
   }
 }
 
 // ==========================================
-// 8. ORDER TRACKER & INVOICE RENDER
+// 6. ORDER TRACKER & INVOICE
 // ==========================================
 async function trackOrder() {
   const idInput = document.getElementById("searchOrderId");
@@ -284,17 +250,16 @@ async function trackOrder() {
   const invWrapper = document.getElementById("invoiceContainer");
 
   try {
-    const snapshot = await firebase.database().ref('orders/' + id).once('value');
-    const data = snapshot.val();
+    const snap = await firebase.database().ref('orders/' + id).once('value');
+    const data = snap.val();
 
     if (!data) {
-      alert("Order ID nahi mila! Kripya sahi Order ID enter karein.");
+      alert("Order ID nahi mila!");
       if (invWrapper) invWrapper.style.display = "none";
       return;
     }
 
-    if (invWrapper) invWrapper.style.display = "block";
-
+    invWrapper.style.display = "block";
     document.getElementById("invNumber").innerText = data.orderId;
     document.getElementById("invCustomerName").innerText = data.clientName;
     document.getElementById("invCustomerEmail").innerText = data.clientEmail;
@@ -302,56 +267,50 @@ async function trackOrder() {
     document.getElementById("invUtr").innerText = data.utr;
     document.getElementById("invItemName").innerText = data.plan;
     document.getElementById("invItemDetails").innerText = data.details || data.requirements;
-    document.getElementById("invItemPrice").innerText = data.amount;
-    document.getElementById("invSubTotal").innerText = data.amount;
+    document.getElementById("invItemPrice").innerText = data.rawAmount || data.amount;
+    document.getElementById("invSubTotal").innerText = data.rawAmount || data.amount;
     document.getElementById("invFinalTotal").innerText = data.amount;
+
+    const discountLine = document.getElementById("invDiscountLine");
+    if (data.coupon && data.coupon !== "NONE") {
+      discountLine.style.display = "block";
+      const saved = (data.rawAmount || data.amount) - data.amount;
+      document.getElementById("invDiscountVal").innerText = saved > 0 ? saved : Math.round(data.amount * 0.10);
+    } else {
+      discountLine.style.display = "none";
+    }
 
     const badge = document.getElementById("invStatusBadge");
     badge.innerText = data.status;
     badge.className = `badge-status badge-${data.status}`;
-
-    const instruction = document.getElementById("invInstructionBox");
-    if (data.status === "Processing") {
-      instruction.innerText = "Order verification pending under Admin (fzboy2008@gmail.com). UTR verify hote hi status Approved ho jayega.";
-    } else if (data.status === "Approved") {
-      instruction.innerText = "Order Approved! Aapka bot claim karne ke liye hamare Discord Server (https://discord.gg/h5ejJAabPv) par ticket open karein.";
-    } else {
-      instruction.innerText = "Order Cancelled. Kripya verification issue ke liye Discord server par staff se contact karein.";
-    }
   } catch (err) {
-    alert("Tracking error: " + err.message);
+    alert("Tracking Error: " + err.message);
   }
 }
 
 // ==========================================
-// 9. ADMIN GOOGLE AUTH & REAL-TIME DASHBOARD
+// 7. STAFF EMAIL/PASSWORD AUTH & DASHBOARD
 // ==========================================
-function googleAdminLogin() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  const errorElem = document.getElementById("adminErrorMsg");
+function handleStaffEmailLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById("adminEmailInput").value.trim().toLowerCase();
+  const pass = document.getElementById("adminPassInput").value.trim();
+  const errBox = document.getElementById("adminErrorMsg");
 
-  firebase.auth().signInWithPopup(provider)
-    .then((res) => {
-      const email = res.user.email;
-      if (authorizedAdminEmails.includes(email)) {
-        document.getElementById("loginGate").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-        document.getElementById("currentAdminEmail").innerText = email;
-        loadAdminOrders();
-      } else {
-        firebase.auth().signOut();
-        if (errorElem) errorElem.innerText = `Unauthorized: ${email} ke pass staff access nahi hai.`;
-      }
-    })
-    .catch((err) => {
-      if (errorElem) errorElem.innerText = err.message;
-    });
+  if (authorizedStaff[email] && authorizedStaff[email] === pass) {
+    sessionStorage.setItem("spark_staff_email", email);
+    document.getElementById("loginGate").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("currentAdminEmail").innerText = email;
+    loadAdminOrders();
+  } else {
+    errBox.innerText = "Access Denied: Invalid email or password.";
+  }
 }
 
 function logoutAdmin() {
-  firebase.auth().signOut().then(() => {
-    window.location.reload();
-  });
+  sessionStorage.removeItem("spark_staff_email");
+  window.location.reload();
 }
 
 function loadAdminOrders() {
@@ -362,31 +321,26 @@ function loadAdminOrders() {
     table.innerHTML = "";
     const orders = snap.val();
     if (!orders) {
-      table.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:#94a3b8;">No orders received yet.</td></tr>`;
+      table.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:#94a3b8;">No orders available.</td></tr>`;
       return;
     }
 
     Object.keys(orders).reverse().forEach((key) => {
       const o = orders[key];
-      
-      // Fix: Undefined values protection
-      const isPromoted = o.promoterStaff && o.promoterStaff !== "NONE" && o.promoterStaff !== "undefined";
-      const staffProfit = o.staffProfit ? o.staffProfit : Math.round(o.amount * 0.10);
-
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><strong>${o.orderId}</strong></td>
-        <td>${o.clientName || 'User'}<br><small style="color:#fda4af;">${o.clientEmail || ''}</small></td>
+        <td>${o.clientName || 'Client'}<br><small style="color:#fda4af;">${o.clientEmail || ''}</small></td>
         <td>${o.plan || 'Custom Plan'}</td>
         <td><code style="background:#090305; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr || 'N/A'}</code></td>
         <td>₹${o.amount}</td>
-        <td>
-          ${isPromoted ? `<strong style="color:#10b981;">${o.promoterStaff}</strong><br><small style="color:#ff4d64;">(10% Profit: ₹${staffProfit})</small>` : '<span style="color:#64748b;">Direct</span>'}
-        </td>
+        <td><small style="color:#f59e0b;">${o.coupon || 'NONE'}</small></td>
         <td><span class="badge-status badge-${o.status}">${o.status}</span></td>
         <td>
           <button class="btn-approve" onclick="updateOrderStatus('${o.orderId}', 'Approved')">Approve</button>
           <button class="btn-cancel" onclick="updateOrderStatus('${o.orderId}', 'Cancelled')">Cancel</button>
+          <button class="btn-delete" onclick="deleteOrder('${o.orderId}')"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn-approve" style="background:#0284c7; margin-left:4px;" onclick="window.open('orders.html?id=${o.orderId}', '_blank')"><i class="fa-solid fa-file-invoice"></i></button>
         </td>
       `;
       table.appendChild(tr);
@@ -395,12 +349,15 @@ function loadAdminOrders() {
 }
 
 function updateOrderStatus(id, newStatus) {
-  firebase.database().ref('orders/' + id).update({
-    status: newStatus
-  }).then(() => {
-    alert(`Order ${id} successfully updated to ${newStatus}!`);
-  }).catch((err) => {
-    alert("Update failed: " + err.message);
+  firebase.database().ref('orders/' + id).update({ status: newStatus }).then(() => {
+    alert(`Order ${id} marked as ${newStatus}!`);
   });
 }
-  
+
+function deleteOrder(id) {
+  if (confirm(`Are you sure you want to delete order ${id}?`)) {
+    firebase.database().ref('orders/' + id).remove().then(() => {
+      alert(`Order ${id} deleted successfully!`);
+    });
+  }
+}
