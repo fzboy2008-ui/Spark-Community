@@ -47,7 +47,7 @@ let activeCheckout = {
 };
 
 // ==========================================
-// 3. INITIALIZATION
+// 3. INITIALIZATION & NAV
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
   const featuresContainer = document.getElementById("featuresList");
@@ -87,6 +87,21 @@ function toggleNav() {
     drawer.classList.toggle('active');
     backdrop.classList.toggle('active');
   }
+}
+
+// Category Tabs Switcher Function
+function switchCategory(targetId, btnElement) {
+  document.querySelectorAll('.category-content-panel').forEach(panel => {
+    panel.classList.remove('active-panel');
+  });
+  
+  document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+
+  const target = document.getElementById(targetId);
+  if (target) target.classList.add('active-panel');
+  if (btnElement) btnElement.classList.add('active');
 }
 
 // ==========================================
@@ -348,4 +363,5 @@ function deleteOrder(id) {
       alert(`Order ${id} deleted successfully!`);
     });
   }
-                                       }
+}
+  
