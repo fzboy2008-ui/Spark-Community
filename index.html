@@ -36,6 +36,7 @@
 </head>
 <body>
 
+  <!-- Clickable Backdrop -->
   <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
 
   <!-- Navbar -->
@@ -44,15 +45,15 @@
       <img src="logo.png" alt="SparkCore Logo">
       Spark<span>Core</span>
     </a>
-    <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
+    <button class="menu-toggle" onclick="toggleNav()" type="button" aria-label="Toggle Menu">
       <i class="fa-solid fa-bars"></i>
     </button>
     <ul class="nav-links" id="navDrawer">
-      <button class="close-menu-btn" onclick="toggleNav()">&times;</button>
-      <li><a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
-      <li><a href="plans.html"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
-      <li><a href="orders.html"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
-      <li><a href="admin.html" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
+      <button class="close-menu-btn" onclick="toggleNav()" type="button">&times;</button>
+      <li><a href="index.html" onclick="navigateTo('index.html')" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="plans.html" onclick="navigateTo('plans.html')"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
+      <li><a href="orders.html" onclick="navigateTo('orders.html')"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
+      <li><a href="admin.html" onclick="navigateTo('admin.html')" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
     </ul>
   </nav>
 
@@ -85,7 +86,7 @@
       <div class="card">
         <i class="fa-solid fa-database" style="font-size:2rem; color:#ff2a44; margin-bottom:0.8rem;"></i>
         <h3>Zero Data Loss</h3>
-        <p>Bot remove ya kick ho jane ke baad bhi configuration hamesha cloud me secure rehta hai.</p>
+        <p>Bot remove ya kick ho jane ke baad bhi dubara add karne par configuration hamesha cloud me secure rehta hai.</p>
       </div>
 
       <div class="card">
@@ -127,3 +128,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+                                  
