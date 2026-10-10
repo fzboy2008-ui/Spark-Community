@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plans & Resources | SparkCore</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,7 +14,10 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <a href="index.html" class="logo">⚡ Spark<span>Core</span></a>
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="SparkCore Logo">
+      Spark<span>Core</span>
+    </a>
     <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
       <i class="fa-solid fa-bars"></i>
     </button>
@@ -26,11 +30,20 @@
     </ul>
   </nav>
 
+  <!-- Sticky Top Category Selector Tabs -->
+  <div class="category-tabs-wrapper">
+    <div class="category-tabs">
+      <a href="#cat-bots" class="cat-tab-btn active"><i class="fa-solid fa-robot"></i> Category 1: Bots</a>
+      <a href="#cat-minecraft" class="cat-tab-btn"><i class="fa-solid fa-cube"></i> Category 2: Minecraft</a>
+      <a href="#cat-templates" class="cat-tab-btn"><i class="fa-solid fa-clock"></i> Category 3: Templates</a>
+    </div>
+  </div>
+
   <div class="container">
     <h1 class="page-title">SparkCore Store & Resources</h1>
 
     <!-- ================= CATEGORY 1: DISCORD BOTS ================= -->
-    <div class="category-header">
+    <div class="category-header" id="cat-bots">
       <h2><i class="fa-solid fa-robot"></i> Category 1: Discord Bots Plans</h2>
       <span class="category-badge">Active</span>
     </div>
@@ -92,7 +105,7 @@
 
       <div class="feature-summary-bar">
         <div style="font-size:0.88rem;">
-          <span>Selected: <strong id="selectedCount" style="color:#ff334b;">0</strong></span> | 
+          <span>Selected: <strong id="selectedCount" style="color:#ff2a44;">0</strong></span> | 
           <span>Items: ₹<strong id="itemsPrice">0</strong></span> + 
           <span>Setup: ₹<strong id="setupPrice">0</strong></span> = 
           <span style="color:#10b981; font-weight:bold;">Total: ₹<strong id="perFeatureTotal">0</strong></span>
@@ -102,7 +115,7 @@
     </section>
 
     <!-- ================= CATEGORY 2: MINECRAFT SKRIPTS ================= -->
-    <div class="category-header">
+    <div class="category-header" id="cat-minecraft">
       <h2><i class="fa-solid fa-cube"></i> Category 2: Minecraft Skript / Scripts</h2>
       <span class="category-badge">Updated</span>
     </div>
@@ -148,7 +161,7 @@
     </div>
 
     <!-- ================= CATEGORY 3: COMING SOON ================= -->
-    <div class="category-header">
+    <div class="category-header" id="cat-templates">
       <h2><i class="fa-solid fa-clock"></i> Category 3: Discord Server Templates & Web</h2>
       <span class="category-badge" style="background:#475569; border-color:#64748b;">Coming Soon</span>
     </div>
@@ -163,7 +176,7 @@
     </div>
   </div>
 
-  <!-- Unified Checkout Modal with 10% Discount Coupons -->
+  <!-- Unified Checkout Modal with 10% Discount Coupons & Paytm QR -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -191,10 +204,10 @@
       </div>
 
       <!-- 10% Discount Coupon Code Box -->
-      <div style="margin: 12px 0; background: #090305; padding: 10px; border-radius: 8px; border: 1px solid #3c1218;">
+      <div style="margin: 12px 0; background: #090204; padding: 10px; border-radius: 8px; border: 1px solid #3c1218;">
         <label style="font-size: 0.75rem; color:#fda4af;">Coupon Code (10% Instant Discount):</label>
         <div style="display:flex; gap:6px; margin-top:4px;">
-          <input type="text" id="couponInput" placeholder="e.g. spark-core-4341" style="flex:1; padding:7px; background:#110507; border:1px solid #45131a; color:#fff; border-radius:4px; font-size:0.8rem;">
+          <input type="text" id="couponInput" placeholder="e.g. spark-core-4341" style="flex:1; padding:7px; background:#110306; border:1px solid #45131a; color:#fff; border-radius:4px; font-size:0.8rem;">
           <button type="button" class="btn secondary-btn" style="padding:4px 10px; font-size:0.8rem;" onclick="applyDiscountCoupon()">Apply</button>
         </div>
         <p id="couponMsg" style="font-size: 0.75rem; margin-top: 4px;"></p>
@@ -215,7 +228,7 @@
           <textarea id="custDetails" rows="2" placeholder="Discord server link ya details..." required></textarea>
         </div>
         <div class="form-group">
-          <label style="color:#ff4d64; font-weight:bold;">Enter 12-Digit UPI / UTR Reference No.:</label>
+          <label style="color:#ff2a44; font-weight:bold;">Enter 12-Digit UPI / UTR Reference No.:</label>
           <input type="text" id="utrCode" placeholder="Enter Transaction UTR after payment" minlength="10" required>
         </div>
 
