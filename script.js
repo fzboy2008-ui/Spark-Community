@@ -364,4 +364,3 @@ function deleteOrder(id) {
     });
   }
 }
-  
