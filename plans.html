@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Plans & Resources | SparkCore</title>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="style.css">
@@ -30,153 +30,151 @@
     </ul>
   </nav>
 
-  <!-- Sticky Category Navigation Tabs -->
+  <!-- Interactive Category Tabs Switcher -->
   <div class="category-tabs-wrapper">
     <div class="category-tabs">
-      <a href="#cat-bots" class="cat-tab-btn active"><i class="fa-solid fa-robot"></i> Category 1: Bots</a>
-      <a href="#cat-minecraft" class="cat-tab-btn"><i class="fa-solid fa-cube"></i> Category 2: Minecraft</a>
-      <a href="#cat-templates" class="cat-tab-btn"><i class="fa-solid fa-clock"></i> Category 3: Templates</a>
+      <button class="cat-tab-btn active" onclick="switchCategory('cat-bots', this)">
+        <i class="fa-solid fa-robot"></i> Category 1: Bots
+      </button>
+      <button class="cat-tab-btn" onclick="switchCategory('cat-minecraft', this)">
+        <i class="fa-solid fa-cube"></i> Category 2: Minecraft
+      </button>
+      <button class="cat-tab-btn" onclick="switchCategory('cat-templates', this)">
+        <i class="fa-solid fa-clock"></i> Category 3: Templates
+      </button>
     </div>
   </div>
 
   <div class="container">
     <h1 class="page-title">SparkCore Store & Resources</h1>
 
-    <!-- ================= CATEGORY 1: DISCORD BOTS ================= -->
-    <div class="category-header" id="cat-bots">
-      <h2><i class="fa-solid fa-robot"></i> Category 1: Discord Bots Plans</h2>
-      <span class="category-badge">Active</span>
-    </div>
-
-    <div class="pricing-grid">
-      <!-- 1st Plan: SparkCore Complete -->
-      <div class="pricing-card">
-        <div class="tag">Complete Suite</div>
-        <h2>SparkCore Complete</h2>
-        <div class="price">₹277.78 <span>/ Month</span></div>
-        <ul class="features-list">
-          <li>✔ All 17+ Features Included</li>
-          <li>✔ Free Discord Setup</li>
-          <li>✔ Staff Support Har Time</li>
-          <li>✔ Permanent Data Save Guarantee</li>
-        </ul>
-        <button class="btn primary-btn full-w" onclick="selectCorePlan('SparkCore Complete', 277.78)">Order Now</button>
-      </div>
-
-      <!-- 2nd Plan: Custom Bot Creation -->
-      <div class="pricing-card">
-        <div class="tag amber">Custom Creation</div>
-        <h2>Custom Bot Creation</h2>
-        <div class="price">₹555.56 <span>One-Time Payment</span></div>
-        <ul class="features-list">
-          <li>✔ Free Discord Setup</li>
-          <li>✔ Staff Support Har Time</li>
-          <li>✔ Hosting: Select panel below</li>
-        </ul>
-        <div class="custom-panel-select" style="margin-bottom:1rem;">
-          <label style="font-size:0.8rem; color:#fda4af;">Select Hosting Choice:</label>
-          <select id="customPanelSelect" onchange="updateCustomTotal()" style="width:100%; margin-top:4px;">
-            <option value="0">Self Hosted (Client Panel/VPS) - ₹0</option>
-            <option value="300">SparkCore 24/7 Hosting Panel - ₹300/mo</option>
-          </select>
-          <div class="calculated-price" id="customTotalDisplay" style="margin-top:6px; color:#ff4d64; font-weight:bold;">Total: ₹555.56</div>
+    <!-- ================= CATEGORY 1 PANEL (DEFAULT ACTIVE) ================= -->
+    <div id="cat-bots" class="category-content-panel active-panel">
+      <div class="pricing-grid">
+        <!-- 1st Plan: SparkCore Complete -->
+        <div class="pricing-card">
+          <div class="tag">Complete Suite</div>
+          <h2>SparkCore Complete</h2>
+          <div class="price">₹277.78 <span>/ Month</span></div>
+          <ul class="features-list">
+            <li>✔ All 17+ Features Included</li>
+            <li>✔ Free Discord Setup</li>
+            <li>✔ Staff Support Har Time</li>
+            <li>✔ Permanent Data Save Guarantee</li>
+          </ul>
+          <button class="btn primary-btn full-w" onclick="selectCorePlan('SparkCore Complete', 277.78)">Order Now</button>
         </div>
-        <button class="btn primary-btn full-w" onclick="selectCustomPlan()">Order Custom Bot</button>
-      </div>
 
-      <!-- 3rd Plan: Selected Features -->
-      <div class="pricing-card">
-        <div class="tag blue">Customizable</div>
-        <h2>SparkCore Selected Features</h2>
-        <div class="price">₹22.22 <span>/ Feature / Month</span></div>
-        <ul class="features-list">
-          <li>✔ ₹50 One-Time Setup</li>
-          <li>✔ Staff Support Har Time</li>
-          <li>✔ Permanent Data Save Guarantee</li>
-        </ul>
-        <a href="#feature-selector-box" class="btn secondary-btn full-w">Select Features Below</a>
-      </div>
-    </div>
-
-    <!-- 17 Features Checklist Section -->
-    <section id="feature-selector-box" class="feature-picker-box">
-      <h3 style="font-size:1.2rem; color:#fff; margin-bottom:4px;">Select Features (₹22.22/item + ₹50 Setup):</h3>
-      <div class="features-grid-checkbox" id="featuresList"></div>
-
-      <div class="feature-summary-bar">
-        <div style="font-size:0.88rem;">
-          <span>Selected: <strong id="selectedCount" style="color:#ff2a44;">0</strong></span> | 
-          <span>Items: ₹<strong id="itemsPrice">0</strong></span> + 
-          <span>Setup: ₹<strong id="setupPrice">0</strong></span> = 
-          <span style="color:#10b981; font-weight:bold;">Total: ₹<strong id="perFeatureTotal">0</strong></span>
+        <!-- 2nd Plan: Custom Bot Creation -->
+        <div class="pricing-card">
+          <div class="tag amber">Custom Creation</div>
+          <h2>Custom Bot Creation</h2>
+          <div class="price">₹555.56 <span>One-Time Payment</span></div>
+          <ul class="features-list">
+            <li>✔ Free Discord Setup</li>
+            <li>✔ Staff Support Har Time</li>
+            <li>✔ Hosting: Select panel below</li>
+          </ul>
+          <div class="custom-panel-select" style="margin-bottom:1rem;">
+            <label style="font-size:0.8rem; color:#fda4af;">Select Hosting Choice:</label>
+            <select id="customPanelSelect" onchange="updateCustomTotal()" style="width:100%; margin-top:4px;">
+              <option value="0">Self Hosted (Client Panel/VPS) - ₹0</option>
+              <option value="300">SparkCore 24/7 Hosting Panel - ₹300/mo</option>
+            </select>
+            <div class="calculated-price" id="customTotalDisplay" style="margin-top:6px; color:#ff4d64; font-weight:bold;">Total: ₹555.56</div>
+          </div>
+          <button class="btn primary-btn full-w" onclick="selectCustomPlan()">Order Custom Bot</button>
         </div>
-        <button class="btn primary-btn" id="btnOrderFeatures" onclick="checkoutFeatures()" disabled>Order Selected Features</button>
-      </div>
-    </section>
 
-    <!-- ================= CATEGORY 2: MINECRAFT SKRIPTS ================= -->
-    <div class="category-header" id="cat-minecraft">
-      <h2><i class="fa-solid fa-cube"></i> Category 2: Minecraft Skript / Scripts</h2>
-      <span class="category-badge">Updated</span>
+        <!-- 3rd Plan: Selected Features -->
+        <div class="pricing-card">
+          <div class="tag blue">Customizable</div>
+          <h2>SparkCore Selected Features</h2>
+          <div class="price">₹22.22 <span>/ Feature / Month</span></div>
+          <ul class="features-list">
+            <li>✔ ₹50 One-Time Setup</li>
+            <li>✔ Staff Support Har Time</li>
+            <li>✔ Permanent Data Save Guarantee</li>
+          </ul>
+          <a href="#feature-selector-box" class="btn secondary-btn full-w">Select Features Below</a>
+        </div>
+      </div>
+
+      <!-- 17 Features Checklist Section -->
+      <section id="feature-selector-box" class="feature-picker-box">
+        <h3 style="font-size:1.2rem; color:#fff; margin-bottom:4px;">Select Features (₹22.22/item + ₹50 Setup):</h3>
+        <div class="features-grid-checkbox" id="featuresList"></div>
+
+        <div class="feature-summary-bar">
+          <div style="font-size:0.88rem;">
+            <span>Selected: <strong id="selectedCount" style="color:#ff2a44;">0</strong></span> | 
+            <span>Items: ₹<strong id="itemsPrice">0</strong></span> + 
+            <span>Setup: ₹<strong id="setupPrice">0</strong></span> = 
+            <span style="color:#10b981; font-weight:bold;">Total: ₹<strong id="perFeatureTotal">0</strong></span>
+          </div>
+          <button class="btn primary-btn" id="btnOrderFeatures" onclick="checkoutFeatures()" disabled>Order Selected Features</button>
+        </div>
+      </section>
     </div>
 
-    <div class="pricing-grid">
-      <!-- 1st Plan: SoulSMP Script -->
-      <div class="pricing-card">
-        <div class="tag">Minecraft</div>
-        <h2>SoulSMP Gamemode Script</h2>
-        <div class="price">₹100 <span>One-Time</span></div>
-        <ul class="features-list">
-          <li>✔ Complete SoulSMP Mechanics</li>
-          <li>✔ Instant Script Download / Delivery</li>
-          <li>✔ Full Configuration Guide</li>
-          <li>✔ Staff Support Har Time</li>
-        </ul>
-        <button class="btn primary-btn full-w" onclick="selectCorePlan('SoulSMP Gamemode Script', 100)">Order Now</button>
-      </div>
+    <!-- ================= CATEGORY 2 PANEL ================= -->
+    <div id="cat-minecraft" class="category-content-panel">
+      <div class="pricing-grid">
+        <!-- 1st Plan: SoulSMP Script -->
+        <div class="pricing-card">
+          <div class="tag">Minecraft</div>
+          <h2>SoulSMP Gamemode Script</h2>
+          <div class="price">₹100 <span>One-Time</span></div>
+          <ul class="features-list">
+            <li>✔ Complete SoulSMP Mechanics</li>
+            <li>✔ Instant Script Download / Delivery</li>
+            <li>✔ Full Configuration Guide</li>
+            <li>✔ Staff Support Har Time</li>
+          </ul>
+          <button class="btn primary-btn full-w" onclick="selectCorePlan('SoulSMP Gamemode Script', 100)">Order Now</button>
+        </div>
 
-      <!-- 2nd Plan -->
-      <div class="pricing-card disabled-card">
-        <div class="tag soon">Coming Soon</div>
-        <h2>Lifesteal SMP Core</h2>
-        <div class="price">₹--- <span>Coming Soon</span></div>
-        <ul class="features-list">
-          <li>✔ Heart Stealing & Custom Items</li>
-          <li>✔ Anti-Dupe Protection</li>
-        </ul>
-        <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
-      </div>
+        <!-- 2nd Plan -->
+        <div class="pricing-card disabled-card">
+          <div class="tag soon">Coming Soon</div>
+          <h2>Lifesteal SMP Core</h2>
+          <div class="price">₹--- <span>Coming Soon</span></div>
+          <ul class="features-list">
+            <li>✔ Heart Stealing & Custom Items</li>
+            <li>✔ Anti-Dupe Protection</li>
+          </ul>
+          <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
+        </div>
 
-      <!-- 3rd Plan -->
-      <div class="pricing-card disabled-card">
-        <div class="tag soon">Coming Soon</div>
-        <h2>Practice PvP Gamemode</h2>
-        <div class="price">₹--- <span>Coming Soon</span></div>
-        <ul class="features-list">
-          <li>✔ Arena Duels & Knockback Config</li>
-          <li>✔ Leaderboards Included</li>
-        </ul>
-        <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
+        <!-- 3rd Plan -->
+        <div class="pricing-card disabled-card">
+          <div class="tag soon">Coming Soon</div>
+          <h2>Practice PvP Gamemode</h2>
+          <div class="price">₹--- <span>Coming Soon</span></div>
+          <ul class="features-list">
+            <li>✔ Arena Duels & Knockback Config</li>
+            <li>✔ Leaderboards Included</li>
+          </ul>
+          <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= CATEGORY 3 PANEL ================= -->
+    <div id="cat-templates" class="category-content-panel">
+      <div class="pricing-grid">
+        <div class="pricing-card disabled-card">
+          <div class="tag soon">Coming Soon</div>
+          <h2>Discord Server Templates</h2>
+          <div class="price">₹---</div>
+          <p style="color:#fda4af; font-size:0.85rem;">Custom built bot dashboard web panels & discord server structures coming very soon.</p>
+        </div>
       </div>
     </div>
 
-    <!-- ================= CATEGORY 3: COMING SOON ================= -->
-    <div class="category-header" id="cat-templates">
-      <h2><i class="fa-solid fa-clock"></i> Category 3: Discord Server Templates & Web</h2>
-      <span class="category-badge" style="background:#475569; border-color:#64748b;">Coming Soon</span>
-    </div>
-
-    <div class="pricing-grid" style="margin-bottom:2rem;">
-      <div class="pricing-card disabled-card">
-        <div class="tag soon">Coming Soon</div>
-        <h2>Advanced Community Templates</h2>
-        <div class="price">₹---</div>
-        <p style="color:#fda4af; font-size:0.85rem;">Custom built bot dashboard web panels & discord server structures coming very soon.</p>
-      </div>
-    </div>
   </div>
 
-  <!-- Unified Checkout Modal (Clean without citation tags) -->
+  <!-- Unified Checkout Modal -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -195,11 +193,11 @@
           <img src="qr.jpg" alt="Paytm QR Code" class="qr-image">
         </div>
         <div class="upi-address" style="font-size:0.8rem; color:#fecdd3; margin:6px 0 10px;">
-          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)
+          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_3](start_span)[span_3](end_span)
         </div>
         
         <a id="paytmDeepLink" href="#" class="upi-app-btn">
-          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe
+          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe[span_4](start_span)[span_4](end_span)
         </a>
       </div>
 
@@ -250,4 +248,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-            
