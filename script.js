@@ -47,9 +47,10 @@ let activeCheckout = {
 };
 
 // ==========================================
-// 3. INITIALIZATION & NAV
+// 3. INITIALIZATION & NAVIGATION DRAWER
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
+  // Render 17 items inside plans.html
   const featuresContainer = document.getElementById("featuresList");
   if (featuresContainer) {
     featuresContainer.innerHTML = "";
@@ -64,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Handle URL query string in orders.html (?id=SPK-XXXX)
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -71,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
+  // Check Staff Session for Dashboard
   const savedStaff = sessionStorage.getItem("spark_staff_email");
   if (savedStaff && authorizedStaff[savedStaff] && document.getElementById('loginGate')) {
     document.getElementById("loginGate").style.display = "none";
@@ -78,8 +81,22 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("currentAdminEmail").innerText = savedStaff;
     loadAdminOrders();
   }
+
+  // Auto-close Drawer on Link Click
+  const navItems = document.querySelectorAll('#navDrawer a');
+  navItems.forEach(link => {
+    link.addEventListener('click', () => {
+      const drawer = document.getElementById('navDrawer');
+      const backdrop = document.getElementById('navBackdrop');
+      if (drawer && backdrop) {
+        drawer.classList.remove('active');
+        backdrop.classList.remove('active');
+      }
+    });
+  });
 });
 
+// Smooth Toggle for 3-Lines Navbar
 function toggleNav() {
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navBackdrop');
@@ -89,7 +106,7 @@ function toggleNav() {
   }
 }
 
-// Category Tabs Switcher Function
+// Category Tabs Switcher (Bots, Minecraft, Templates)
 function switchCategory(targetId, btnElement) {
   document.querySelectorAll('.category-content-panel').forEach(panel => {
     panel.classList.remove('active-panel');
@@ -105,7 +122,7 @@ function switchCategory(targetId, btnElement) {
 }
 
 // ==========================================
-// 4. PLAN SELECTIONS (UPDATED EXACT PRICES)
+// 4. PLAN CALCULATIONS & MODAL
 // ==========================================
 function recalculatePerFeature() {
   const checked = document.querySelectorAll('#featuresList input[type="checkbox"]:checked');
@@ -114,11 +131,17 @@ function recalculatePerFeature() {
   const setupPrice = count > 0 ? 50 : 0;
   const total = parseFloat((itemsPrice + setupPrice).toFixed(2));
 
-  document.getElementById("selectedCount").innerText = count;
-  document.getElementById("itemsPrice").innerText = itemsPrice;
-  document.getElementById("setupPrice").innerText = setupPrice;
-  document.getElementById("perFeatureTotal").innerText = total;
-  document.getElementById("btnOrderFeatures").disabled = count === 0;
+  const countElem = document.getElementById("selectedCount");
+  const itemsElem = document.getElementById("itemsPrice");
+  const setupElem = document.getElementById("setupPrice");
+  const totalElem = document.getElementById("perFeatureTotal");
+  const orderBtn = document.getElementById("btnOrderFeatures");
+
+  if (countElem) countElem.innerText = count;
+  if (itemsElem) itemsElem.innerText = itemsPrice;
+  if (setupElem) setupElem.innerText = setupPrice;
+  if (totalElem) totalElem.innerText = total;
+  if (orderBtn) orderBtn.disabled = count === 0;
 }
 
 function checkoutFeatures() {
