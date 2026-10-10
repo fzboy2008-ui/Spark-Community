@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Orders & Invoices | Spark Community</title>
+  <title>Orders & Invoices | SparkCore</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Navigation Drawer Backdrop -->
   <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
 
-  <!-- Navbar with 3-Lines -->
+  <!-- Navbar -->
   <nav class="navbar">
-    <a href="index.html" class="logo">⚡ Spark <span>Community</span></a>
+    <a href="index.html" class="logo">⚡ Spark<span>Core</span></a>
     <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
       <i class="fa-solid fa-bars"></i>
     </button>
@@ -30,20 +29,20 @@
   <div class="container tracker-page">
     <h1 class="page-title">Track Your Order & Invoice</h1>
     
-    <div class="track-search-bar">
-      <input type="text" id="searchOrderId" placeholder="Enter Order ID (e.g. SPK-9532)">
+    <div style="display:flex; gap:8px; max-width:440px; margin:1.5rem auto;">
+      <input type="text" id="searchOrderId" placeholder="Enter Order ID (e.g. SPK-9532)" style="flex:1; padding:10px; background:#110507; border:1px solid #45131a; border-radius:8px; color:#fff;">
       <button class="btn primary-btn" onclick="trackOrder()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
     </div>
 
-    <!-- Soft Host inspired Invoice container -->
+    <!-- Printable Invoice -->
     <div id="invoiceContainer" style="display:none; background:#14070a; border:1px solid rgba(239,68,68,0.3); border-radius:14px; padding:1.8rem; margin-top:1.5rem; box-shadow: 0 0 25px rgba(239,68,68,0.2);">
       
       <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid #3c1218; padding-bottom:1rem; margin-bottom:1.2rem; flex-wrap:wrap; gap:10px;">
         <div>
-          <h2 style="font-size:1.4rem; color:#fff;">Invoice #<span id="invNumber"></span></h2>
+          <h2 style="font-size:1.4rem; color:#fff;">SparkCore Invoice #<span id="invNumber"></span></h2>
           <div class="badge-status" id="invStatusBadge" style="margin-top:4px;">Processing</div>
         </div>
-        <button class="btn secondary-btn" onclick="window.print()"><i class="fa-solid fa-download"></i> Download PDF[span_3](start_span)[span_3](end_span)</button>
+        <button class="btn secondary-btn" onclick="window.print()"><i class="fa-solid fa-download"></i> Download Invoice (PDF)[span_3](start_span)[span_3](end_span)</button>
       </div>
 
       <div style="display:flex; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:12px; font-size:0.88rem;">
@@ -64,13 +63,13 @@
           <thead>
             <tr>
               <th>Item</th>
-              <th>Details / Features</th>
+              <th>Details / Plan</th>
               <th>Amount</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td id="invItemName">Spark Bot</td>
+              <td id="invItemName">SparkCore Service</td>
               <td id="invItemDetails">Features list...</td>
               <td>₹<span id="invItemPrice">0</span></td>
             </tr>
@@ -80,21 +79,21 @@
 
       <div style="text-align:right; border-top:1px solid #3c1218; padding-top:1rem; margin-top:1.2rem;">
         <p style="color:#fda4af; font-size:0.9rem;">Subtotal: ₹<span id="invSubTotal">0</span></p>
-        <h3 style="font-size:1.4rem; color:#fff; margin-top:4px;">Total: ₹<span id="invFinalTotal">0</span></h3>
+        <p id="invDiscountLine" style="color:#10b981; font-size:0.9rem; display:none;">Coupon Discount (10%): -₹<span id="invDiscountVal">0</span></p>
+        <h3 style="font-size:1.4rem; color:#fff; margin-top:4px;">Total Paid: ₹<span id="invFinalTotal">0</span></h3>
       </div>
 
       <div id="invInstructionBox" style="background:#090305; border:1px solid #3c1218; padding:12px; border-radius:8px; text-align:center; color:#fda4af; font-size:0.85rem; margin-top:1.2rem;">
-        Order verification pending under Admin (fzboy2008@gmail.com).
+        Order verification pending under Admin. UTR check hote hi ticket claim open hoga.
       </div>
     </div>
   </div>
 
   <footer>
-    <p>© Spark Community. All rights reserved.</p>
-    <p style="margin-top: 4px;">Support: <a href="mailto:fzboy2008@gmail.com">fzboy2008@gmail.com</a></p>
+    <p>© SparkCore. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase Compatibility Scripts -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
