@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff Portal | SparkCore</title>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="style.css">
@@ -10,97 +10,66 @@
 </head>
 <body>
 
-  <!-- Clickable Backdrop -->
-  <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
-
-  <!-- Navbar -->
   <nav class="navbar">
     <a href="index.html" class="logo">
       <img src="logo.png" alt="SparkCore Logo">
       Spark<span>Core</span>
     </a>
-    <button class="menu-toggle" onclick="toggleNav()" type="button" aria-label="Toggle Menu">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    <ul class="nav-links" id="navDrawer">
-      <button class="close-menu-btn" onclick="toggleNav()" type="button">&times;</button>
-      <li><a href="index.html" onclick="navigateTo('index.html')"><i class="fa-solid fa-house"></i> Home</a></li>
-      <li><a href="plans.html" onclick="navigateTo('plans.html')"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
-      <li><a href="orders.html" onclick="navigateTo('orders.html')"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
-      <li><a href="admin.html" onclick="navigateTo('admin.html')" class="active btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
-    </ul>
+    <div class="nav-btns">
+      <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="plans.html" class="nav-btn"><i class="fa-solid fa-layer-group"></i> Plans</a>
+      <a href="orders.html" class="nav-btn"><i class="fa-solid fa-receipt"></i> Orders</a>
+      <a href="admin.html" class="nav-btn staff-btn active"><i class="fa-solid fa-lock"></i> Staff</a>
+    </div>
   </nav>
 
-  <div class="container admin-container">
-    
-    <!-- 1. Email & Password Staff Login Gate -->
+  <div class="container">
     <div id="loginGate">
-      <div class="login-card">
-        <div class="logo" style="justify-content: center; margin-bottom: 0.5rem;">⚡ Spark<span>Core Staff</span></div>
-        <p style="margin: 0.8rem 0 1.2rem; color: #fda4af; font-size: 0.85rem;">
-          Authorized access only: fzboy2008 & dareque3n
-        </p>
-
-        <form id="staffLoginForm" onsubmit="handleStaffEmailLogin(event)">
+      <div class="card" style="max-width:340px; margin:3rem auto; text-align:center;">
+        <h3 style="color:#fff; margin-bottom:6px;">⚡ Staff Access</h3>
+        <p style="color:#fda4af; font-size:0.8rem; margin-bottom:1rem;">fzboy2008 & dareque3n only</p>
+        <form onsubmit="handleStaffEmailLogin(event)">
           <div class="form-group" style="text-align:left;">
-            <label>Staff Email:</label>
+            <label>Email:</label>
             <input type="email" id="adminEmailInput" placeholder="fzboy2008@gmail.com" required>
           </div>
           <div class="form-group" style="text-align:left;">
-            <label>Staff Password:</label>
+            <label>Password:</label>
             <input type="password" id="adminPassInput" placeholder="••••••••" required>
           </div>
-          <button type="submit" class="btn primary-btn full-w" style="margin-top:10px;">
-            <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
-          </button>
+          <button type="submit" class="btn primary-btn full-w">Login</button>
         </form>
-        <p id="adminErrorMsg" style="color: #ef4444; margin-top: 10px; font-size: 0.82rem;"></p>
+        <p id="adminErrorMsg" style="color:#ef4444; font-size:0.8rem; margin-top:8px;"></p>
       </div>
     </div>
 
-    <!-- 2. Staff Management Dashboard -->
     <div id="adminPanel" style="display:none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #3c1218; padding-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid #3c1218; padding-bottom:8px;">
         <div>
-          <h2 style="font-size:1.4rem; color:#fff;">SparkCore Staff Panel</h2>
-          <p style="color: #fda4af; font-size: 0.85rem;">Logged in as: <strong id="currentAdminEmail" style="color: #ff4d64;"></strong></p>
+          <h2 style="font-size:1.3rem; color:#fff;">Staff Management</h2>
+          <small style="color:#fda4af;">Logged in as: <strong id="currentAdminEmail" style="color:#ff2a44;"></strong></small>
         </div>
-        <button class="btn secondary-btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        <button class="btn secondary-btn" onclick="logoutAdmin()">Logout</button>
       </div>
-
-      <h3 style="margin-bottom: 0.6rem; font-size: 1.15rem; color:#fff;">Live Orders Management</h3>
 
       <div class="table-responsive">
         <table class="orders-table">
           <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Plan</th>
-              <th>UTR Number</th>
-              <th>Amount</th>
-              <th>Coupon</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
+            <tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>UTR</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
           </thead>
-          <tbody id="ordersListTable">
-            <!-- Dynamic Realtime Orders -->
-          </tbody>
+          <tbody id="ordersListTable"></tbody>
         </table>
       </div>
     </div>
-
   </div>
 
   <footer>
     <p>© SparkCore. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+  
