@@ -41,12 +41,11 @@ const authorizedStaff = {
 let activeCheckout = { plan: '', details: '', rawPrice: 0, finalPrice: 0, appliedCoupon: "NONE" };
 
 // ==========================================
-// 3. PAGE INITIALIZATION
+// 3. POPULATE & SETUP
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-  // Populate Features Picker Popup Modal
+function populateModalFeatures() {
   const modalContainer = document.getElementById("modalFeaturesList");
-  if (modalContainer) {
+  if (modalContainer && modalContainer.children.length === 0) {
     modalContainer.innerHTML = "";
     availableFeatures.forEach((feat, index) => {
       const label = document.createElement("label");
@@ -58,8 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
       modalContainer.appendChild(label);
     });
   }
+}
 
-  // Handle URL query string in orders.html
+document.addEventListener("DOMContentLoaded", () => {
+  populateModalFeatures();
+
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -67,12 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
-  // Load Real Customer Reviews (if on home page)
   if (document.getElementById("reviewsContainer")) {
     loadCustomerReviews();
   }
 
-  // Check Staff Session
   const savedStaff = sessionStorage.getItem("spark_staff_email");
   if (savedStaff && authorizedStaff[savedStaff] && document.getElementById('loginGate')) {
     document.getElementById("loginGate").style.display = "none";
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Category Tabs Switcher
+// Category Switcher
 function switchCategory(targetId, btnElement) {
   document.querySelectorAll('.category-content-panel').forEach(p => p.classList.remove('active-panel'));
   document.querySelectorAll('.cat-tab-btn').forEach(b => b.classList.remove('active'));
@@ -92,13 +92,17 @@ function switchCategory(targetId, btnElement) {
 }
 
 // ==========================================
-// 4. SELECTED FEATURES POPUP PICKER
+// 4. SELECTED FEATURES POPUP LOGIC
 // ==========================================
 function openFeaturePickerModal() {
-  document.getElementById("featurePickerModal").style.display = "flex";
+  populateModalFeatures();
+  const modal = document.getElementById("featurePickerModal");
+  if (modal) modal.style.display = "flex";
 }
+
 function closeFeaturePickerModal() {
-  document.getElementById("featurePickerModal").style.display = "none";
+  const modal = document.getElementById("featurePickerModal");
+  if (modal) modal.style.display = "none";
 }
 
 function recalculateModalFeatures() {
@@ -108,9 +112,13 @@ function recalculateModalFeatures() {
   const setupPrice = count > 0 ? 50 : 0;
   const total = parseFloat((itemsPrice + setupPrice).toFixed(2));
 
-  document.getElementById("popCount").innerText = count;
-  document.getElementById("popTotal").innerText = `₹${total}`;
-  document.getElementById("btnProceedFeatures").disabled = count === 0;
+  const popCount = document.getElementById("popCount");
+  const popTotal = document.getElementById("popTotal");
+  const btnProceed = document.getElementById("btnProceedFeatures");
+
+  if (popCount) popCount.innerText = count;
+  if (popTotal) popTotal.innerText = `₹${total}`;
+  if (btnProceed) btnProceed.disabled = count === 0;
 }
 
 function proceedFromFeaturePicker() {
@@ -123,7 +131,7 @@ function proceedFromFeaturePicker() {
 }
 
 // ==========================================
-// 5. PLAN PRICING & CHECKOUT
+// 5. CHECKOUT & COUPONS
 // ==========================================
 function selectCorePlan(name, price) {
   openCheckoutModal(name, "Complete Features + Free Discord Setup", price);
@@ -150,7 +158,6 @@ function openCheckoutModal(planName, details, price) {
   document.getElementById("mPlanName").innerText = planName;
   document.getElementById("mFinalPrice").innerText = price;
 
-  // Direct Paytm UPI Deep-Link
   const paytmLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=SparkCore%20Payment`;
   document.getElementById("paytmDeepLink").setAttribute("href", paytmLink);
 
@@ -298,7 +305,6 @@ async function submitCustomerReview(e) {
       return;
     }
 
-    // Save review under /reviews/{orderId}
     const reviewPayload = {
       orderId: orderId,
       customerName: orderData.clientName,
