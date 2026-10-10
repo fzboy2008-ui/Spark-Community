@@ -1,5 +1,5 @@
 // ==========================================
-// 1. FIREBASE CONFIGURATION
+// 1. FIREBASE INITIALIZATION
 // ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyC2-XllE7e9xeK8p4vOCnNMHyGPSK-Hi70",
@@ -38,32 +38,28 @@ const authorizedStaff = {
   "dareque3n@gmail.com": "Fzboy786!"
 };
 
-let activeCheckout = {
-  plan: '',
-  details: '',
-  rawPrice: 0,
-  finalPrice: 0,
-  appliedCoupon: "NONE"
-};
+let activeCheckout = { plan: '', details: '', rawPrice: 0, finalPrice: 0, appliedCoupon: "NONE" };
 
 // ==========================================
-// 3. INITIALIZATION & NAVIGATION DRAWER
+// 3. PAGE INITIALIZATION
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  const featuresContainer = document.getElementById("featuresList");
-  if (featuresContainer) {
-    featuresContainer.innerHTML = "";
+  // Populate Features Picker Popup Modal
+  const modalContainer = document.getElementById("modalFeaturesList");
+  if (modalContainer) {
+    modalContainer.innerHTML = "";
     availableFeatures.forEach((feat, index) => {
       const label = document.createElement("label");
-      label.className = "feature-item-label";
+      label.className = "feature-pop-item";
       label.innerHTML = `
-        <input type="checkbox" value="${feat}" onchange="recalculatePerFeature()">
+        <input type="checkbox" value="${feat}" onchange="recalculateModalFeatures()">
         <span><strong>${index + 1}.</strong> ${feat} — <em>₹22.22/mo</em></span>
       `;
-      featuresContainer.appendChild(label);
+      modalContainer.appendChild(label);
     });
   }
 
+  // Handle URL query string in orders.html
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -71,6 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
+  // Load Real Customer Reviews (if on home page)
+  if (document.getElementById("reviewsContainer")) {
+    loadCustomerReviews();
+  }
+
+  // Check Staff Session
   const savedStaff = sessionStorage.getItem("spark_staff_email");
   if (savedStaff && authorizedStaff[savedStaff] && document.getElementById('loginGate')) {
     document.getElementById("loginGate").style.display = "none";
@@ -80,71 +82,49 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function toggleNav() {
-  const drawer = document.getElementById('navDrawer');
-  const backdrop = document.getElementById('navBackdrop');
-  if (drawer && backdrop) {
-    drawer.classList.toggle('active');
-    backdrop.classList.toggle('active');
-  }
-}
-
-function navigateTo(url) {
-  const drawer = document.getElementById('navDrawer');
-  const backdrop = document.getElementById('navBackdrop');
-  if (drawer && backdrop) {
-    drawer.classList.remove('active');
-    backdrop.classList.remove('active');
-  }
-  window.location.href = url;
-}
-
+// Category Tabs Switcher
 function switchCategory(targetId, btnElement) {
-  document.querySelectorAll('.category-content-panel').forEach(panel => {
-    panel.classList.remove('active-panel');
-  });
-  
-  document.querySelectorAll('.cat-tab-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-
+  document.querySelectorAll('.category-content-panel').forEach(p => p.classList.remove('active-panel'));
+  document.querySelectorAll('.cat-tab-btn').forEach(b => b.classList.remove('active'));
   const target = document.getElementById(targetId);
   if (target) target.classList.add('active-panel');
   if (btnElement) btnElement.classList.add('active');
 }
 
 // ==========================================
-// 4. PLAN CALCULATIONS & MODAL
+// 4. SELECTED FEATURES POPUP PICKER
 // ==========================================
-function recalculatePerFeature() {
-  const checked = document.querySelectorAll('#featuresList input[type="checkbox"]:checked');
+function openFeaturePickerModal() {
+  document.getElementById("featurePickerModal").style.display = "flex";
+}
+function closeFeaturePickerModal() {
+  document.getElementById("featurePickerModal").style.display = "none";
+}
+
+function recalculateModalFeatures() {
+  const checked = document.querySelectorAll('#modalFeaturesList input[type="checkbox"]:checked');
   const count = checked.length;
   const itemsPrice = parseFloat((count * 22.22).toFixed(2));
   const setupPrice = count > 0 ? 50 : 0;
   const total = parseFloat((itemsPrice + setupPrice).toFixed(2));
 
-  const countElem = document.getElementById("selectedCount");
-  const itemsElem = document.getElementById("itemsPrice");
-  const setupElem = document.getElementById("setupPrice");
-  const totalElem = document.getElementById("perFeatureTotal");
-  const orderBtn = document.getElementById("btnOrderFeatures");
-
-  if (countElem) countElem.innerText = count;
-  if (itemsElem) itemsElem.innerText = itemsPrice;
-  if (setupElem) setupElem.innerText = setupPrice;
-  if (totalElem) totalElem.innerText = total;
-  if (orderBtn) orderBtn.disabled = count === 0;
+  document.getElementById("popCount").innerText = count;
+  document.getElementById("popTotal").innerText = `₹${total}`;
+  document.getElementById("btnProceedFeatures").disabled = count === 0;
 }
 
-function checkoutFeatures() {
-  const checkedInputs = Array.from(document.querySelectorAll('#featuresList input[type="checkbox"]:checked'));
-  const selectedNames = checkedInputs.map(cb => cb.value);
-  const count = selectedNames.length;
-  const total = parseFloat(((count * 22.22) + 50).toFixed(2));
+function proceedFromFeaturePicker() {
+  const checked = Array.from(document.querySelectorAll('#modalFeaturesList input[type="checkbox"]:checked'));
+  const names = checked.map(c => c.value);
+  const total = parseFloat(((names.length * 22.22) + 50).toFixed(2));
 
-  openCheckoutModal("SparkCore Selected Features", selectedNames.join(", "), total);
+  closeFeaturePickerModal();
+  openCheckoutModal("Selected Features Plan", names.join(", "), total);
 }
 
+// ==========================================
+// 5. PLAN PRICING & CHECKOUT
+// ==========================================
 function selectCorePlan(name, price) {
   openCheckoutModal(name, "Complete Features + Free Discord Setup", price);
 }
@@ -160,31 +140,24 @@ function updateCustomTotal() {
 function selectCustomPlan() {
   const selectElem = document.getElementById("customPanelSelect");
   const panel = selectElem ? parseInt(selectElem.value, 10) : 0;
-  const panelText = panel === 300 ? "SparkCore 24/7 Hosting Panel (₹300/mo)" : "Self Hosted VPS (₹0)";
+  const panelText = panel === 300 ? "SparkCore Hosting (₹300/mo)" : "Self Hosted VPS (₹0)";
   const total = parseFloat((555.56 + panel).toFixed(2));
   openCheckoutModal("Custom Bot Creation", `Base: ₹555.56 | Hosting: ${panelText}`, total);
 }
 
 function openCheckoutModal(planName, details, price) {
-  activeCheckout = {
-    plan: planName,
-    details: details,
-    rawPrice: price,
-    finalPrice: price,
-    appliedCoupon: "NONE"
-  };
-
+  activeCheckout = { plan: planName, details: details, rawPrice: price, finalPrice: price, appliedCoupon: "NONE" };
   document.getElementById("mPlanName").innerText = planName;
   document.getElementById("mFinalPrice").innerText = price;
 
-  const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=SparkCore%20Payment`;
-  const deepLink = document.getElementById("paytmDeepLink");
-  if (deepLink) deepLink.setAttribute("href", upiLink);
+  // Direct Paytm UPI Deep-Link
+  const paytmLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${price}&cu=INR&tn=SparkCore%20Payment`;
+  document.getElementById("paytmDeepLink").setAttribute("href", paytmLink);
 
-  const couponInput = document.getElementById("couponInput");
-  if (couponInput) couponInput.value = "";
-  const couponMsg = document.getElementById("couponMsg");
-  if (couponMsg) couponMsg.innerText = "";
+  const coupInput = document.getElementById("couponInput");
+  if (coupInput) coupInput.value = "";
+  const coupMsg = document.getElementById("couponMsg");
+  if (coupMsg) coupMsg.innerText = "";
 
   document.getElementById("checkoutModal").style.display = "flex";
 }
@@ -204,11 +177,11 @@ function applyDiscountCoupon() {
 
     document.getElementById("mFinalPrice").innerText = activeCheckout.finalPrice;
 
-    const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${activeCheckout.finalPrice}&cu=INR&tn=SparkCore%20Payment`;
-    document.getElementById("paytmDeepLink").setAttribute("href", upiLink);
+    const paytmLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${activeCheckout.finalPrice}&cu=INR&tn=SparkCore%20Payment`;
+    document.getElementById("paytmDeepLink").setAttribute("href", paytmLink);
 
     msg.style.color = "#10b981";
-    msg.innerText = `Success: 10% Discount Applied! (-₹${discount})`;
+    msg.innerText = `10% Discount Applied! (-₹${discount})`;
   } else {
     msg.style.color = "#ef4444";
     msg.innerText = "Invalid Coupon Code!";
@@ -216,18 +189,13 @@ function applyDiscountCoupon() {
 }
 
 // ==========================================
-// 5. ORDER SUBMISSION
+// 6. ORDER SUBMISSION
 // ==========================================
 async function handleOrderSubmission(e) {
   e.preventDefault();
-
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.innerText = "Submitting Order...";
-
   const orderId = "SPK-" + Math.floor(1000 + Math.random() * 9000);
   const now = new Date();
-  const formattedDate = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
   const payload = {
     orderId: orderId,
@@ -241,43 +209,38 @@ async function handleOrderSubmission(e) {
     utr: document.getElementById("utrCode").value.trim(),
     coupon: activeCheckout.appliedCoupon,
     status: "Processing",
-    date: formattedDate,
+    date: dateStr,
     timestamp: now.toISOString()
   };
 
   try {
     await firebase.database().ref('orders/' + orderId).set(payload);
-    alert(`Order Placed!\nOrder ID: ${orderId}\nUnder staff review.`);
+    alert(`Order Placed Successfully!\nOrder ID: ${orderId}\nUnder review.`);
     closeModal();
     window.location.href = `orders.html?id=${orderId}`;
   } catch (err) {
     alert("Error: " + err.message);
-    submitBtn.disabled = false;
   }
 }
 
 // ==========================================
-// 6. TRACK ORDER & INVOICE
+// 7. ORDER TRACKER
 // ==========================================
 async function trackOrder() {
-  const idInput = document.getElementById("searchOrderId");
-  if (!idInput) return;
-  const id = idInput.value.trim();
+  const id = document.getElementById("searchOrderId").value.trim();
   if (!id) return;
-
-  const invWrapper = document.getElementById("invoiceContainer");
+  const inv = document.getElementById("invoiceContainer");
 
   try {
     const snap = await firebase.database().ref('orders/' + id).once('value');
     const data = snap.val();
-
     if (!data) {
-      alert("Order ID nahi mila!");
-      if (invWrapper) invWrapper.style.display = "none";
+      alert("Order ID not found!");
+      if (inv) inv.style.display = "none";
       return;
     }
 
-    invWrapper.style.display = "block";
+    inv.style.display = "block";
     document.getElementById("invNumber").innerText = data.orderId;
     document.getElementById("invCustomerName").innerText = data.clientName;
     document.getElementById("invCustomerEmail").innerText = data.clientEmail;
@@ -307,7 +270,105 @@ async function trackOrder() {
 }
 
 // ==========================================
-// 7. STAFF LOGIN & MANAGEMENT
+// 8. REAL REVIEWS SYSTEM (APPROVED ONLY + LIKES)
+// ==========================================
+async function submitCustomerReview(e) {
+  e.preventDefault();
+  const orderId = document.getElementById("revOrderId").value.trim();
+  const rating = parseInt(document.getElementById("revRating").value, 10);
+  const comment = document.getElementById("revComment").value.trim();
+  const statusMsg = document.getElementById("revStatusMsg");
+
+  statusMsg.style.color = "#fda4af";
+  statusMsg.innerText = "Checking Order Verification...";
+
+  try {
+    const snap = await firebase.database().ref('orders/' + orderId).once('value');
+    const orderData = snap.val();
+
+    if (!orderData) {
+      statusMsg.style.color = "#ef4444";
+      statusMsg.innerText = "Order ID nahi mila!";
+      return;
+    }
+
+    if (orderData.status !== "Approved") {
+      statusMsg.style.color = "#ef4444";
+      statusMsg.innerText = `Order status is '${orderData.status}'. Sirf Approved customer review de sakte hain!`;
+      return;
+    }
+
+    // Save review under /reviews/{orderId}
+    const reviewPayload = {
+      orderId: orderId,
+      customerName: orderData.clientName,
+      plan: orderData.plan,
+      rating: rating,
+      comment: comment,
+      likes: 0,
+      dislikes: 0,
+      date: new Date().toLocaleDateString('en-GB')
+    };
+
+    await firebase.database().ref('reviews/' + orderId).set(reviewPayload);
+    statusMsg.style.color = "#10b981";
+    statusMsg.innerText = "Review submitted successfully!";
+    document.getElementById("revComment").value = "";
+  } catch (err) {
+    statusMsg.style.color = "#ef4444";
+    statusMsg.innerText = "Error: " + err.message;
+  }
+}
+
+function loadCustomerReviews() {
+  const container = document.getElementById("reviewsContainer");
+  if (!container) return;
+
+  firebase.database().ref('reviews').on('value', (snap) => {
+    container.innerHTML = "";
+    const reviews = snap.val();
+    if (!reviews) {
+      container.innerHTML = `<p style="color:#94a3b8; font-size:0.8rem; text-align:center;">Abhi tak koi review nahi aaya. Be the first verified customer to review!</p>`;
+      return;
+    }
+
+    Object.keys(reviews).reverse().forEach(key => {
+      const r = reviews[key];
+      const stars = "⭐".repeat(r.rating);
+      const card = document.createElement("div");
+      card.className = "review-card";
+      card.innerHTML = `
+        <div class="review-card-header">
+          <div>
+            <strong style="color:#fff;">${r.customerName}</strong>
+            <span class="review-badge-verified">Verified Buyer</span>
+            <span style="color:#fda4af; font-size:0.75rem;">(${r.plan})</span>
+          </div>
+          <span style="color:#64748b; font-size:0.72rem;">${r.date}</span>
+        </div>
+        <div class="review-stars">${stars}</div>
+        <p style="font-size:0.82rem; color:#fce7eb; margin:5px 0;">${r.comment}</p>
+        <div class="review-actions">
+          <button class="review-vote-btn" onclick="voteReview('${r.orderId}', 'likes')">
+            <i class="fa-regular fa-thumbs-up"></i> <span>${r.likes || 0}</span>
+          </button>
+          <button class="review-vote-btn" onclick="voteReview('${r.orderId}', 'dislikes')">
+            <i class="fa-regular fa-thumbs-down"></i> <span>${r.dislikes || 0}</span>
+          </button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+}
+
+function voteReview(orderId, type) {
+  const ref = firebase.database().ref(`reviews/${orderId}/${type}`);
+  ref.transaction(current => (current || 0) + 1);
+}
+
+// ==========================================
+// 9. STAFF AUTH & CONTROLS
 // ==========================================
 function handleStaffEmailLogin(e) {
   e.preventDefault();
@@ -335,30 +396,28 @@ function loadAdminOrders() {
   const table = document.getElementById("ordersListTable");
   if (!table) return;
 
-  firebase.database().ref('orders').on('value', (snap) => {
+  firebase.database().ref('orders').on('value', snap => {
     table.innerHTML = "";
     const orders = snap.val();
     if (!orders) {
-      table.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:#94a3b8;">No orders available.</td></tr>`;
+      table.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8;">No orders received yet.</td></tr>`;
       return;
     }
 
-    Object.keys(orders).reverse().forEach((key) => {
+    Object.keys(orders).reverse().forEach(key => {
       const o = orders[key];
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td><strong>${o.orderId}</strong></td>
-        <td>${o.clientName || 'Client'}<br><small style="color:#fda4af;">${o.clientEmail || ''}</small></td>
-        <td>${o.plan || 'Custom Plan'}</td>
-        <td><code style="background:#090204; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr || 'N/A'}</code></td>
+        <td>${o.clientName}<br><small style="color:#fda4af;">${o.clientEmail}</small></td>
+        <td>${o.plan}</td>
+        <td><code style="color:#ff2a44;">${o.utr}</code></td>
         <td>₹${o.amount}</td>
-        <td><small style="color:#f59e0b;">${o.coupon || 'NONE'}</small></td>
         <td><span class="badge-status badge-${o.status}">${o.status}</span></td>
         <td>
-          <button class="btn-approve" onclick="updateOrderStatus('${o.orderId}', 'Approved')">Approve</button>
-          <button class="btn-cancel" onclick="updateOrderStatus('${o.orderId}', 'Cancelled')">Cancel</button>
-          <button class="btn-delete" onclick="deleteOrder('${o.orderId}')"><i class="fa-solid fa-trash"></i></button>
-          <button class="btn-approve" style="background:#0284c7; margin-left:4px;" onclick="window.open('orders.html?id=${o.orderId}', '_blank')"><i class="fa-solid fa-file-invoice"></i></button>
+          <button class="btn" style="background:#10b981; color:#fff; padding:3px 6px; font-size:0.75rem;" onclick="updateOrderStatus('${o.orderId}', 'Approved')">Approve</button>
+          <button class="btn" style="background:#ef4444; color:#fff; padding:3px 6px; font-size:0.75rem;" onclick="updateOrderStatus('${o.orderId}', 'Cancelled')">Cancel</button>
+          <button class="btn" style="background:#64748b; color:#fff; padding:3px 6px; font-size:0.75rem;" onclick="deleteOrder('${o.orderId}')"><i class="fa-solid fa-trash"></i></button>
         </td>
       `;
       table.appendChild(tr);
@@ -373,10 +432,9 @@ function updateOrderStatus(id, newStatus) {
 }
 
 function deleteOrder(id) {
-  if (confirm(`Are you sure you want to delete order ${id}?`)) {
+  if (confirm(`Delete order ${id}?`)) {
     firebase.database().ref('orders/' + id).remove().then(() => {
-      alert(`Order ${id} deleted successfully!`);
+      alert(`Order ${id} deleted!`);
     });
   }
 }
-  
