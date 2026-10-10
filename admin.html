@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Spark Community</title>
+  <title>Staff Portal | SparkCore</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Navigation Drawer Backdrop -->
   <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
 
-  <!-- Navbar with 3-Lines -->
+  <!-- Navbar -->
   <nav class="navbar">
-    <a href="index.html" class="logo">⚡ Spark <span>Community</span></a>
+    <a href="index.html" class="logo">⚡ Spark<span>Core</span></a>
     <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
       <i class="fa-solid fa-bars"></i>
     </button>
@@ -29,34 +28,43 @@
 
   <div class="container admin-container">
     
-    <!-- 1. Google Sign-In Gate -->
+    <!-- 1. Email & Password Staff Login Gate -->
     <div id="loginGate">
       <div class="login-card">
-        <div class="logo" style="justify-content: center; margin-bottom: 0.5rem;">⚡ Spark <span>Admin</span></div>
-        <p style="margin: 0.8rem 0 1.2rem; color: #fda4af; font-size: 0.88rem;">
-          Yeh dashboard sirf verified staff accounts (fzboy2008 & fouzanwani2008) ke liye reserved hai.
+        <div class="logo" style="justify-content: center; margin-bottom: 0.5rem;">⚡ Spark<span>Core Staff</span></div>
+        <p style="margin: 0.8rem 0 1.2rem; color: #fda4af; font-size: 0.85rem;">
+          Authorized access only: fzboy2008 & dareque3n
         </p>
-        <button class="btn primary-btn full-w" onclick="googleAdminLogin()">
-          <i class="fa-brands fa-google"></i> Sign In With Google
-        </button>
+
+        <form id="staffLoginForm" onsubmit="handleStaffEmailLogin(event)">
+          <div class="form-group" style="text-align:left;">
+            <label>Staff Email:</label>
+            <input type="email" id="adminEmailInput" placeholder="fzboy2008@gmail.com" required>
+          </div>
+          <div class="form-group" style="text-align:left;">
+            <label>Staff Password:</label>
+            <input type="password" id="adminPassInput" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn primary-btn full-w" style="margin-top:10px;">
+            <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+          </button>
+        </form>
         <p id="adminErrorMsg" style="color: #ef4444; margin-top: 10px; font-size: 0.82rem;"></p>
       </div>
     </div>
 
-    <!-- 2. Staff Dashboard Panel -->
+    <!-- 2. Staff Management Dashboard -->
     <div id="adminPanel" style="display:none;">
-      
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #3c1218; padding-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
         <div>
-          <h2 style="font-size:1.4rem; color:#fff;">Spark Staff Control Panel</h2>
+          <h2 style="font-size:1.4rem; color:#fff;">SparkCore Staff Panel</h2>
           <p style="color: #fda4af; font-size: 0.85rem;">Logged in as: <strong id="currentAdminEmail" style="color: #ff4d64;"></strong></p>
         </div>
         <button class="btn secondary-btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
       </div>
 
-      <h3 style="margin-bottom: 0.6rem; font-size: 1.15rem; color:#fff;">Pending & Recent Orders</h3>
+      <h3 style="margin-bottom: 0.6rem; font-size: 1.15rem; color:#fff;">Live Orders Management</h3>
 
-      <!-- Responsive Table Scroll Wrapper -->
       <div class="table-responsive">
         <table class="orders-table">
           <thead>
@@ -66,26 +74,25 @@
               <th>Plan</th>
               <th>UTR Number</th>
               <th>Amount</th>
-              <th>Promoter (10% Profit)</th>
+              <th>Coupon</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="ordersListTable">
-            <!-- Dynamic data loaded from Firebase -->
+            <!-- Dynamic Realtime Orders -->
           </tbody>
         </table>
       </div>
-
     </div>
 
   </div>
 
   <footer>
-    <p>© Spark Community. All rights reserved.</p>
+    <p>© SparkCore. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase Compatibility Scripts -->
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
