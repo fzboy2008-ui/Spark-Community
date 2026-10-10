@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <!-- Clickable Backdrop -->
   <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
 
   <!-- Navbar -->
@@ -18,15 +19,15 @@
       <img src="logo.png" alt="SparkCore Logo">
       Spark<span>Core</span>
     </a>
-    <button class="menu-toggle" onclick="toggleNav()" aria-label="Toggle Menu">
+    <button class="menu-toggle" onclick="toggleNav()" type="button" aria-label="Toggle Menu">
       <i class="fa-solid fa-bars"></i>
     </button>
     <ul class="nav-links" id="navDrawer">
-      <button class="close-menu-btn" onclick="toggleNav()">&times;</button>
-      <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
-      <li><a href="plans.html" class="active"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
-      <li><a href="orders.html"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
-      <li><a href="admin.html" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
+      <button class="close-menu-btn" onclick="toggleNav()" type="button">&times;</button>
+      <li><a href="index.html" onclick="navigateTo('index.html')"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="plans.html" onclick="navigateTo('plans.html')" class="active"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
+      <li><a href="orders.html" onclick="navigateTo('orders.html')"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
+      <li><a href="admin.html" onclick="navigateTo('admin.html')" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
     </ul>
   </nav>
 
@@ -193,11 +194,11 @@
           <img src="qr.jpg" alt="Paytm QR Code" class="qr-image">
         </div>
         <div class="upi-address" style="font-size:0.8rem; color:#fecdd3; margin:6px 0 10px;">
-          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_0](start_span)[span_0](end_span)
+          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_2](start_span)[span_2](end_span)
         </div>
         
         <a id="paytmDeepLink" href="#" class="upi-app-btn">
-          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe[span_1](start_span)[span_1](end_span)
+          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe[span_3](start_span)[span_3](end_span)
         </a>
       </div>
 
@@ -248,4 +249,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-                                                                                                         
