@@ -10,31 +10,39 @@
 </head>
 <body>
 
-  <!-- Clean Top Nav Buttons -->
-  <nav class="navbar">
-    <a href="index.html" class="logo">
-      <img src="logo.png" alt="SparkCore Logo">
-      Spark<span>Core</span>
-    </a>
-    <div class="nav-btns">
+  <!-- 2-Line Header Navbar -->
+  <header class="header-wrapper">
+    <div class="brand-row">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="SparkCore Logo">
+        Spark<span>Core</span>
+      </a>
+    </div>
+    <nav class="nav-row">
       <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
       <a href="plans.html" class="nav-btn active"><i class="fa-solid fa-layer-group"></i> Plans</a>
       <a href="orders.html" class="nav-btn"><i class="fa-solid fa-receipt"></i> Orders</a>
       <a href="admin.html" class="nav-btn staff-btn"><i class="fa-solid fa-lock"></i> Staff</a>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <div class="container">
     <h1 class="page-title">SparkCore Plans & Shop</h1>
 
-    <!-- Category Tabs -->
+    <!-- Clean Simple Pills: Bots, Minecraft, Templates -->
     <div class="category-tabs-wrapper">
-      <button class="cat-tab-btn active" onclick="switchCategory('cat-bots', this)">Category 1: Bots Plans</button>
-      <button class="cat-tab-btn" onclick="switchCategory('cat-minecraft', this)">Category 2: Minecraft Scripts</button>
-      <button class="cat-tab-btn" onclick="switchCategory('cat-templates', this)">Category 3: Templates</button>
+      <button class="cat-tab-btn active" onclick="switchCategory('cat-bots', this)">
+        <i class="fa-solid fa-robot"></i> Bots
+      </button>
+      <button class="cat-tab-btn" onclick="switchCategory('cat-minecraft', this)">
+        <i class="fa-solid fa-cube"></i> Minecraft
+      </button>
+      <button class="cat-tab-btn" onclick="switchCategory('cat-templates', this)">
+        <i class="fa-solid fa-clock"></i> Templates
+      </button>
     </div>
 
-    <!-- ================= CATEGORY 1: BOTS ================= -->
+    <!-- ================= BOTS PANEL ================= -->
     <div id="cat-bots" class="category-content-panel active-panel">
       <div class="pricing-grid">
         <!-- 1st Plan -->
@@ -87,7 +95,7 @@
       </div>
     </div>
 
-    <!-- ================= CATEGORY 2: MINECRAFT ================= -->
+    <!-- ================= MINECRAFT PANEL ================= -->
     <div id="cat-minecraft" class="category-content-panel">
       <div class="pricing-grid">
         <div class="pricing-card">
@@ -119,7 +127,7 @@
       </div>
     </div>
 
-    <!-- ================= CATEGORY 3: TEMPLATES ================= -->
+    <!-- ================= TEMPLATES PANEL ================= -->
     <div id="cat-templates" class="category-content-panel">
       <div class="pricing-grid">
         <div class="pricing-card disabled-card">
@@ -132,7 +140,7 @@
     </div>
   </div>
 
-  <!-- POPUP 1: Select Features Modal (No page clutter) -->
+  <!-- POPUP 1: Select Features Modal -->
   <div id="featurePickerModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeFeaturePickerModal()">&times;</span>
@@ -150,7 +158,7 @@
     </div>
   </div>
 
-  <!-- POPUP 2: Direct Paytm Payment Gateway Modal -->
+  <!-- POPUP 2: Paytm Payment Gateway Modal -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -161,21 +169,19 @@
       </div>
       <p style="font-size:0.8rem; color:#fda4af; margin-bottom:8px;" id="mPlanName">Plan</p>
 
-      <!-- Clean Paytm QR & Direct Button -->
       <div style="text-align: center;">
         <div style="background:#fff; padding:8px; border-radius:10px; display:inline-block;">
           <img src="qr.jpg" alt="Paytm QR" style="width:145px; height:145px; display:block;">
         </div>
         <div style="font-size:0.78rem; color:#fecdd3; margin:6px 0;">
-          UPI: <strong>6006283334@ptyes</strong> (Fouzan Tariq)
+          UPI: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_0](start_span)[span_0](end_span)
         </div>
         
         <a id="paytmDeepLink" href="#" class="paytm-direct-btn">
-          <i class="fa-solid fa-wallet"></i> Pay via Paytm
+          <i class="fa-solid fa-wallet"></i> Pay via Paytm[span_1](start_span)[span_1](end_span)
         </a>
       </div>
 
-      <!-- 10% Discount Coupon -->
       <div style="margin: 10px 0; background: #090204; padding: 8px; border-radius: 6px; border: 1px solid #3c1218;">
         <div style="display:flex; gap:6px;">
           <input type="text" id="couponInput" placeholder="Coupon Code (10% off)" style="flex:1; padding:6px; font-size:0.78rem;">
@@ -184,7 +190,6 @@
         <p id="couponMsg" style="font-size: 0.72rem; margin-top: 3px;"></p>
       </div>
 
-      <!-- Order Form -->
       <form onsubmit="handleOrderSubmission(event)">
         <div class="form-group">
           <label>Name / Discord Tag:</label>
@@ -217,3 +222,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+  
