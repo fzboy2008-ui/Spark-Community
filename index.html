@@ -10,7 +10,6 @@
   <meta name="keywords" content="SparkCore, Discord Bots India, Minecraft Skript, Soulsmp gamemode, Spark community, Discord setup">
   <link rel="canonical" href="https://fzboy2008-ui.github.io/SparkCore/">
 
-  <!-- Google Sitelinks Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,19 +32,21 @@
 </head>
 <body>
 
-  <!-- Clean Top Nav Buttons -->
-  <nav class="navbar">
-    <a href="index.html" class="logo">
-      <img src="logo.png" alt="SparkCore Logo">
-      Spark<span>Core</span>
-    </a>
-    <div class="nav-btns">
+  <!-- 2-Line Header Navbar -->
+  <header class="header-wrapper">
+    <div class="brand-row">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="SparkCore Logo">
+        Spark<span>Core</span>
+      </a>
+    </div>
+    <nav class="nav-row">
       <a href="index.html" class="nav-btn active"><i class="fa-solid fa-house"></i> Home</a>
       <a href="plans.html" class="nav-btn"><i class="fa-solid fa-layer-group"></i> Plans</a>
       <a href="orders.html" class="nav-btn"><i class="fa-solid fa-receipt"></i> Orders</a>
       <a href="admin.html" class="nav-btn staff-btn"><i class="fa-solid fa-lock"></i> Staff</a>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <!-- Hero with Centered Orbit Hologram -->
   <header class="hero">
@@ -67,7 +68,7 @@
     </div>
   </header>
 
-  <!-- Key Info Cards -->
+  <!-- Info Cards -->
   <div class="container">
     <h2 class="section-title">Why Choose SparkCore?</h2>
     <div class="cards-grid">
@@ -103,12 +104,11 @@
       </div>
     </div>
 
-    <!-- REAL CUSTOMER REVIEWS (Approved Only) -->
+    <!-- Real Reviews Section -->
     <section class="reviews-section">
       <h2 style="font-size:1.3rem; color:#fff; text-align:center; margin-bottom:4px;">💬 Verified Customer Reviews</h2>
       <p style="text-align:center; color:#fda4af; font-size:0.8rem; margin-bottom:1.2rem;">Sirf Approved Order ID wale verified buyers hi feedback submit kar sakte hain.</p>
 
-      <!-- Review Submission Box -->
       <div class="review-form-box">
         <h4 style="font-size:0.9rem; color:#fff; margin-bottom:8px;">Leave a Verified Review</h4>
         <form onsubmit="submitCustomerReview(event)">
@@ -137,10 +137,7 @@
         </form>
       </div>
 
-      <!-- Live Reviews Display with Like/Dislike -->
-      <div class="reviews-grid" id="reviewsContainer">
-        <!-- Loaded via Firebase -->
-      </div>
+      <div class="reviews-grid" id="reviewsContainer"></div>
     </section>
   </div>
 
