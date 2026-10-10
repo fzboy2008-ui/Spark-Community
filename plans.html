@@ -10,10 +10,8 @@
 </head>
 <body>
 
-  <!-- Clickable Backdrop -->
   <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <a href="index.html" class="logo">
       <img src="logo.png" alt="SparkCore Logo">
@@ -31,7 +29,7 @@
     </ul>
   </nav>
 
-  <!-- Clean Mobile Horizontal Tabs (No Cut) -->
+  <!-- Interactive Category Switcher Tabs -->
   <div class="category-tabs-wrapper">
     <div class="category-tabs">
       <button class="cat-tab-btn active" onclick="switchCategory('cat-bots', this)">
@@ -52,7 +50,6 @@
     <!-- ================= CATEGORY 1: BOTS ================= -->
     <div id="cat-bots" class="category-content-panel active-panel">
       <div class="pricing-grid">
-        <!-- 1st Plan -->
         <div class="pricing-card">
           <div class="tag">Complete Suite</div>
           <h2>SparkCore Complete</h2>
@@ -66,7 +63,6 @@
           <button class="btn primary-btn full-w" onclick="selectCorePlan('SparkCore Complete', 277.78)">Order Now</button>
         </div>
 
-        <!-- 2nd Plan -->
         <div class="pricing-card">
           <div class="tag amber">Custom Creation</div>
           <h2>Custom Bot Creation</h2>
@@ -87,7 +83,6 @@
           <button class="btn primary-btn full-w" onclick="selectCustomPlan()">Order Custom Bot</button>
         </div>
 
-        <!-- 3rd Plan -->
         <div class="pricing-card">
           <div class="tag blue">Customizable</div>
           <h2>SparkCore Selected Features</h2>
@@ -101,7 +96,6 @@
         </div>
       </div>
 
-      <!-- 17 Features Checklist -->
       <section id="feature-selector-box" class="feature-picker-box">
         <h3 style="font-size:1.2rem; color:#fff; margin-bottom:4px;">Select Features (₹22.22/item + ₹50 Setup):</h3>
         <div class="features-grid-checkbox" id="featuresList"></div>
@@ -121,7 +115,6 @@
     <!-- ================= CATEGORY 2: MINECRAFT ================= -->
     <div id="cat-minecraft" class="category-content-panel">
       <div class="pricing-grid">
-        <!-- 1st Plan -->
         <div class="pricing-card">
           <div class="tag">Minecraft</div>
           <h2>SoulSMP Gamemode Script</h2>
@@ -135,7 +128,6 @@
           <button class="btn primary-btn full-w" onclick="selectCorePlan('SoulSMP Gamemode Script', 100)">Order Now</button>
         </div>
 
-        <!-- 2nd Plan -->
         <div class="pricing-card disabled-card">
           <div class="tag soon">Coming Soon</div>
           <h2>Lifesteal SMP Core</h2>
@@ -147,7 +139,6 @@
           <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
         </div>
 
-        <!-- 3rd Plan -->
         <div class="pricing-card disabled-card">
           <div class="tag soon">Coming Soon</div>
           <h2>Practice PvP Gamemode</h2>
@@ -175,7 +166,7 @@
 
   </div>
 
-  <!-- Unified Checkout Modal -->
+  <!-- Unified Checkout Modal (Cleaned: No span text bugs) -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -188,21 +179,19 @@
         <p style="font-size:0.8rem; color:#fda4af;" id="mPlanName">Selected Plan</p>
       </div>
 
-      <!-- Paytm QR Display -->
       <div style="text-align: center;">
         <div class="qr-frame">
           <img src="qr.jpg" alt="Paytm QR Code" class="qr-image">
         </div>
         <div class="upi-address" style="font-size:0.8rem; color:#fecdd3; margin:6px 0 10px;">
-          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_2](start_span)[span_2](end_span)
+          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_0](start_span)[span_0](end_span)
         </div>
         
         <a id="paytmDeepLink" href="#" class="upi-app-btn">
-          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe[span_3](start_span)[span_3](end_span)
+          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe[span_1](start_span)[span_1](end_span)
         </a>
       </div>
 
-      <!-- 10% Discount Coupon Code Box -->
       <div style="margin: 12px 0; background: #090204; padding: 10px; border-radius: 8px; border: 1px solid #3c1218;">
         <label style="font-size: 0.75rem; color:#fda4af;">Coupon Code (10% Instant Discount):</label>
         <div style="display:flex; gap:6px; margin-top:4px;">
@@ -212,7 +201,6 @@
         <p id="couponMsg" style="font-size: 0.75rem; margin-top: 4px;"></p>
       </div>
 
-      <!-- Checkout Form -->
       <form id="orderCheckoutForm" onsubmit="handleOrderSubmission(event)">
         <div class="form-group">
           <label>Your Name / Discord Tag:</label>
@@ -242,7 +230,6 @@
     <p>© SparkCore. All rights reserved.</p>
   </footer>
 
-  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
