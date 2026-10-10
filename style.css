@@ -44,7 +44,7 @@ body {
   gap: 8px;
   text-decoration: none;
   text-shadow: 0 0 12px rgba(255, 42, 68, 0.6);
-  z-index: 1002;
+  z-index: 1001;
 }
 
 .logo img {
@@ -66,9 +66,10 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 6px;
-  z-index: 1002;
+  padding: 8px;
+  z-index: 1001;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* --- Backdrop (Drawer ke peeche) --- */
@@ -77,38 +78,38 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
-  z-index: 9998;
+  z-index: 9990;
   touch-action: manipulation;
 }
+
 .nav-backdrop.active {
-  display: block;
+  display: block !important;
 }
 
-/* --- Menu Drawer (Crystal Clear, Full Click Area) --- */
+/* --- Menu Drawer (Sabse upar & 100% Clickable) --- */
 .nav-links {
   position: fixed;
   top: 0;
   right: 0;
-  width: 78%;
-  max-width: 290px;
+  width: 80%;
+  max-width: 300px;
   height: 100vh;
   background: #140508 !important;
-  border-left: 1.5px solid #ff2a44;
+  border-left: 2px solid #ff2a44;
   display: flex;
   flex-direction: column;
   padding: 4.5rem 1.2rem 2rem;
   gap: 12px;
   list-style: none;
-  z-index: 9999;
-  box-shadow: -15px 0 35px rgba(0,0,0,0.95);
+  z-index: 99999 !important;
+  box-shadow: -15px 0 40px rgba(0, 0, 0, 0.95);
   transform: translateX(100%);
-  transition: transform 0.28s ease-in-out;
-  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto !important;
 }
 
 .nav-links.active {
-  transform: translateX(0);
-  pointer-events: auto;
+  transform: translateX(0) !important;
 }
 
 .close-menu-btn {
@@ -118,15 +119,16 @@ body {
   background: transparent;
   border: none;
   color: #ff4d64;
-  font-size: 1.8rem;
+  font-size: 2rem;
   cursor: pointer;
-  padding: 6px;
-  z-index: 10000;
+  padding: 8px;
+  z-index: 100000 !important;
   touch-action: manipulation;
 }
 
 .nav-links li {
   width: 100%;
+  list-style: none;
 }
 
 .nav-links a {
@@ -136,19 +138,24 @@ body {
   padding: 14px 16px;
   border-radius: 8px;
   font-weight: 600;
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 10px;
   background: #090204;
   border: 1px solid #3c1218;
-  cursor: pointer;
+  cursor: pointer !important;
   width: 100%;
   box-sizing: border-box;
   touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto !important;
+  -webkit-tap-highlight-color: rgba(255, 42, 68, 0.3);
+  position: relative;
+  z-index: 100000 !important;
 }
 
-.nav-links a.active, .nav-links a:hover, .nav-links a:active {
+.nav-links a.active, 
+.nav-links a:hover, 
+.nav-links a:active {
   color: #fff !important;
   background: linear-gradient(135deg, rgba(255, 42, 68, 0.45), rgba(153, 27, 27, 0.35)) !important;
   border: 1px solid #ff2a44 !important;
@@ -172,8 +179,8 @@ body {
     padding: 0;
     gap: 8px;
     box-shadow: none;
-    transform: none;
-    pointer-events: auto;
+    transform: none !important;
+    z-index: auto !important;
   }
   .nav-links li { width: auto; }
   .nav-links a {
@@ -569,4 +576,4 @@ body {
 .login-card { max-width: 360px; margin: 4rem auto; background: #140508; padding: 2rem; border-radius: 14px; text-align: center; border: 1px solid rgba(255, 42, 68, 0.35); }
 footer { text-align: center; padding: 2.5rem 1rem; color: #fda4af; font-size: 0.82rem; border-top: 1px solid rgba(255, 42, 68, 0.15); margin-top: 3.5rem; }
 footer a { color: #ff2a44; text-decoration: none; }
-         
+  
