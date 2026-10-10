@@ -47,10 +47,9 @@ let activeCheckout = {
 };
 
 // ==========================================
-// 3. INITIALIZATION & NAVIGATION LOGIC
+// 3. INITIALIZATION & NAVIGATION DRAWER
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Render 17 items inside plans.html
   const featuresContainer = document.getElementById("featuresList");
   if (featuresContainer) {
     featuresContainer.innerHTML = "";
@@ -65,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Handle URL query string in orders.html (?id=SPK-XXXX)
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -73,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
-  // Check Staff Session for Dashboard
   const savedStaff = sessionStorage.getItem("spark_staff_email");
   if (savedStaff && authorizedStaff[savedStaff] && document.getElementById('loginGate')) {
     document.getElementById("loginGate").style.display = "none";
@@ -83,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Toggle Drawer Function
 function toggleNav() {
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navBackdrop');
@@ -93,7 +89,6 @@ function toggleNav() {
   }
 }
 
-// Instant Navigation on Touch
 function navigateTo(url) {
   const drawer = document.getElementById('navDrawer');
   const backdrop = document.getElementById('navBackdrop');
@@ -104,7 +99,6 @@ function navigateTo(url) {
   window.location.href = url;
 }
 
-// Category Tabs Switcher (Bots, Minecraft, Templates)
 function switchCategory(targetId, btnElement) {
   document.querySelectorAll('.category-content-panel').forEach(panel => {
     panel.classList.remove('active-panel');
@@ -384,4 +378,5 @@ function deleteOrder(id) {
       alert(`Order ${id} deleted successfully!`);
     });
   }
-  }
+}
+  
