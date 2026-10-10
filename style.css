@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
@@ -21,13 +22,13 @@ body {
     radial-gradient(circle at 100% 100%, rgba(185, 28, 28, 0.12), transparent 45%);
 }
 
-/* --- Clean Sticky Navbar --- */
+/* --- Clean Modern Sticky Navbar --- */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.85rem 1.2rem;
-  background: #100407;
+  padding: 0.85rem 1.4rem;
+  background: #0f0306;
   border-bottom: 1px solid rgba(255, 42, 68, 0.35);
   position: sticky;
   top: 0;
@@ -44,7 +45,7 @@ body {
   gap: 8px;
   text-decoration: none;
   text-shadow: 0 0 12px rgba(255, 42, 68, 0.6);
-  z-index: 1001;
+  z-index: 1002;
 }
 
 .logo img {
@@ -66,46 +67,42 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding: 8px;
-  z-index: 1001;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+  justify-content: center;
+  padding: 6px;
+  z-index: 1002;
 }
 
-/* --- Backdrop (Drawer ke peeche) --- */
+/* --- OriginLabs Style Floating Mobile Menu Drawer --- */
 .nav-backdrop {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  z-index: 9990;
-  touch-action: manipulation;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
 }
-
 .nav-backdrop.active {
   display: block !important;
 }
 
-/* --- Menu Drawer (Sabse upar & 100% Clickable) --- */
 .nav-links {
   position: fixed;
   top: 0;
   right: 0;
-  width: 80%;
-  max-width: 300px;
+  width: 82%;
+  max-width: 320px;
   height: 100vh;
-  background: #140508 !important;
+  background: #120407 !important;
   border-left: 2px solid #ff2a44;
   display: flex;
   flex-direction: column;
-  padding: 4.5rem 1.2rem 2rem;
-  gap: 12px;
+  padding: 4.5rem 1.4rem 2rem;
+  gap: 14px;
   list-style: none;
-  z-index: 99999 !important;
+  z-index: 9999 !important;
   box-shadow: -15px 0 40px rgba(0, 0, 0, 0.95);
   transform: translateX(100%);
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: auto !important;
 }
 
 .nav-links.active {
@@ -122,35 +119,28 @@ body {
   font-size: 2rem;
   cursor: pointer;
   padding: 8px;
-  z-index: 100000 !important;
-  touch-action: manipulation;
+  z-index: 10000;
 }
 
 .nav-links li {
   width: 100%;
-  list-style: none;
 }
 
 .nav-links a {
   color: #ffffff !important;
   text-decoration: none;
   font-size: 1rem;
-  padding: 14px 16px;
-  border-radius: 8px;
+  padding: 14px 18px;
+  border-radius: 10px;
   font-weight: 600;
   display: flex !important;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: #090204;
   border: 1px solid #3c1218;
-  cursor: pointer !important;
+  cursor: pointer;
   width: 100%;
-  box-sizing: border-box;
-  touch-action: manipulation;
-  pointer-events: auto !important;
-  -webkit-tap-highlight-color: rgba(255, 42, 68, 0.3);
-  position: relative;
-  z-index: 100000 !important;
+  transition: all 0.2s ease;
 }
 
 .nav-links a.active, 
@@ -159,6 +149,7 @@ body {
   color: #fff !important;
   background: linear-gradient(135deg, rgba(255, 42, 68, 0.45), rgba(153, 27, 27, 0.35)) !important;
   border: 1px solid #ff2a44 !important;
+  box-shadow: 0 0 15px rgba(255, 42, 68, 0.3);
 }
 
 .btn-staff {
@@ -166,7 +157,7 @@ body {
 }
 
 @media (min-width: 850px) {
-  .menu-toggle, .close-menu-btn { display: none; }
+  .menu-toggle, .close-menu-btn { display: none !important; }
   .nav-backdrop { display: none !important; }
   .nav-links {
     position: static;
@@ -185,18 +176,18 @@ body {
   .nav-links li { width: auto; }
   .nav-links a {
     font-size: 0.85rem;
-    padding: 6px 12px;
-    background: transparent;
-    border: 1px solid transparent;
+    padding: 7px 14px;
+    background: #140508;
+    border: 1px solid #3c1218;
   }
 }
 
 /* --- Hologram Orbit Stage (Home Page) --- */
 .hologram-stage {
   position: relative;
-  width: 260px;
-  max-width: 90vw;
-  height: 260px;
+  width: 270px;
+  max-width: 85vw;
+  height: 270px;
   margin: 1.5rem auto 2.2rem;
   display: flex;
   align-items: center;
@@ -209,7 +200,7 @@ body {
   height: 140px;
   object-fit: contain;
   z-index: 5;
-  filter: drop-shadow(0 0 22px rgba(255, 42, 68, 0.9));
+  filter: drop-shadow(0 0 25px rgba(255, 42, 68, 0.95));
   animation: floatCore 4s ease-in-out infinite alternate;
 }
 
@@ -256,12 +247,12 @@ body {
 
 .orbit-badge {
   position: absolute;
-  background: rgba(18, 4, 7, 0.92);
+  background: rgba(18, 4, 7, 0.95);
   border: 1px solid #ff2a44;
   color: #fca5a5;
   font-size: 0.68rem;
   font-weight: 700;
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(255, 42, 68, 0.5);
   white-space: nowrap;
@@ -271,13 +262,13 @@ body {
 .badge-pos-2 { bottom: 0px; right: 4px; }
 .badge-pos-3 { bottom: 0px; left: 4px; }
 
-/* --- Category Tab Switcher Bar --- */
+/* --- Interactive Category Tab Switcher Bar --- */
 .category-tabs-wrapper {
   position: sticky;
   top: 57px;
   z-index: 900;
-  background: #0f0306;
-  padding: 8px 10px;
+  background: #0b0204;
+  padding: 10px 14px;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid rgba(255, 42, 68, 0.3);
   width: 100%;
@@ -285,24 +276,23 @@ body {
 
 .category-tabs {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 2px 4px;
 }
 .category-tabs::-webkit-scrollbar { display: none; }
 
 .cat-tab-btn {
-  background: #190509;
+  background: #160408;
   border: 1px solid rgba(255, 42, 68, 0.4);
   color: #fda4af;
-  padding: 7px 12px;
-  border-radius: 18px;
-  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
@@ -310,20 +300,25 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: 0.2s;
+  transition: all 0.25s ease;
 }
 
 .cat-tab-btn:hover, .cat-tab-btn.active {
   background: linear-gradient(135deg, #ff2a44, #991b1b);
   color: #fff;
   border-color: #ff2a44;
-  box-shadow: 0 0 12px rgba(255, 42, 68, 0.5);
+  box-shadow: 0 0 14px rgba(255, 42, 68, 0.6);
 }
 
 .category-content-panel { display: none; }
-.category-content-panel.active-panel { display: block; }
+.category-content-panel.active-panel { display: block; animation: fadeIn 0.25s ease-in-out; }
 
-/* --- Containers & Sections --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Content Layout --- */
 .container, .section {
   max-width: 1100px;
   margin: 1rem auto;
@@ -363,11 +358,11 @@ body {
   text-shadow: 0 0 12px rgba(255, 42, 68, 0.5);
 }
 
-/* Pricing Grid & Cards */
+/* Pricing Grid & Cards (Desktop Grid + Mobile Fluid) */
 .cards-grid, .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.3rem;
   width: 100%;
 }
 
@@ -375,7 +370,7 @@ body {
   background: linear-gradient(180deg, #150508 0%, #0d0204 100%);
   border: 1px solid rgba(255, 42, 68, 0.28);
   border-radius: 14px;
-  padding: 1.4rem;
+  padding: 1.5rem;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
   position: relative;
   transition: 0.25s;
