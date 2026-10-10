@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plans & Resources | SparkCore</title>
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="stylesheet" href="style.css">
@@ -10,46 +10,34 @@
 </head>
 <body>
 
-  <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
-
+  <!-- Clean Top Nav Buttons -->
   <nav class="navbar">
     <a href="index.html" class="logo">
       <img src="logo.png" alt="SparkCore Logo">
       Spark<span>Core</span>
     </a>
-    <button class="menu-toggle" onclick="toggleNav()" type="button" aria-label="Toggle Menu">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    <ul class="nav-links" id="navDrawer">
-      <button class="close-menu-btn" onclick="toggleNav()" type="button">&times;</button>
-      <li><a href="index.html" onclick="navigateTo('index.html')"><i class="fa-solid fa-house"></i> Home</a></li>
-      <li><a href="plans.html" onclick="navigateTo('plans.html')" class="active"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
-      <li><a href="orders.html" onclick="navigateTo('orders.html')"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
-      <li><a href="admin.html" onclick="navigateTo('admin.html')" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
-    </ul>
+    <div class="nav-btns">
+      <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="plans.html" class="nav-btn active"><i class="fa-solid fa-layer-group"></i> Plans</a>
+      <a href="orders.html" class="nav-btn"><i class="fa-solid fa-receipt"></i> Orders</a>
+      <a href="admin.html" class="nav-btn staff-btn"><i class="fa-solid fa-lock"></i> Staff</a>
+    </div>
   </nav>
 
-  <!-- Interactive Category Switcher Tabs -->
-  <div class="category-tabs-wrapper">
-    <div class="category-tabs">
-      <button class="cat-tab-btn active" onclick="switchCategory('cat-bots', this)">
-        <i class="fa-solid fa-robot"></i> Bots Plans
-      </button>
-      <button class="cat-tab-btn" onclick="switchCategory('cat-minecraft', this)">
-        <i class="fa-solid fa-cube"></i> Minecraft Scripts
-      </button>
-      <button class="cat-tab-btn" onclick="switchCategory('cat-templates', this)">
-        <i class="fa-solid fa-clock"></i> Templates
-      </button>
-    </div>
-  </div>
-
   <div class="container">
-    <h1 class="page-title">SparkCore Store & Resources</h1>
+    <h1 class="page-title">SparkCore Plans & Shop</h1>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs-wrapper">
+      <button class="cat-tab-btn active" onclick="switchCategory('cat-bots', this)">Category 1: Bots Plans</button>
+      <button class="cat-tab-btn" onclick="switchCategory('cat-minecraft', this)">Category 2: Minecraft Scripts</button>
+      <button class="cat-tab-btn" onclick="switchCategory('cat-templates', this)">Category 3: Templates</button>
+    </div>
 
     <!-- ================= CATEGORY 1: BOTS ================= -->
     <div id="cat-bots" class="category-content-panel active-panel">
       <div class="pricing-grid">
+        <!-- 1st Plan -->
         <div class="pricing-card">
           <div class="tag">Complete Suite</div>
           <h2>SparkCore Complete</h2>
@@ -63,6 +51,7 @@
           <button class="btn primary-btn full-w" onclick="selectCorePlan('SparkCore Complete', 277.78)">Order Now</button>
         </div>
 
+        <!-- 2nd Plan -->
         <div class="pricing-card">
           <div class="tag amber">Custom Creation</div>
           <h2>Custom Bot Creation</h2>
@@ -70,46 +59,32 @@
           <ul class="features-list">
             <li>✔ Free Discord Setup</li>
             <li>✔ Staff Support Har Time</li>
-            <li>✔ Hosting: Select panel below</li>
+            <li>✔ Hosting: Choose below</li>
           </ul>
-          <div class="custom-panel-select" style="margin-bottom:1rem;">
-            <label style="font-size:0.8rem; color:#fda4af;">Select Hosting Choice:</label>
-            <select id="customPanelSelect" onchange="updateCustomTotal()" style="width:100%; margin-top:4px;">
+          <div style="margin-bottom: 0.8rem;">
+            <label style="font-size:0.75rem; color:#fda4af;">Select Hosting:</label>
+            <select id="customPanelSelect" onchange="updateCustomTotal()">
               <option value="0">Self Hosted (Client Panel/VPS) - ₹0</option>
               <option value="300">SparkCore 24/7 Hosting Panel - ₹300/mo</option>
             </select>
-            <div class="calculated-price" id="customTotalDisplay" style="margin-top:6px; color:#ff4d64; font-weight:bold;">Total: ₹555.56</div>
+            <div id="customTotalDisplay" style="color:#ff2a44; font-weight:bold; font-size:0.85rem; margin-top:4px;">Total: ₹555.56</div>
           </div>
           <button class="btn primary-btn full-w" onclick="selectCustomPlan()">Order Custom Bot</button>
         </div>
 
+        <!-- 3rd Plan (Popup Feature Picker) -->
         <div class="pricing-card">
           <div class="tag blue">Customizable</div>
-          <h2>SparkCore Selected Features</h2>
+          <h2>Selected Features Plan</h2>
           <div class="price">₹22.22 <span>/ Feature / Month</span></div>
           <ul class="features-list">
-            <li>✔ ₹50 One-Time Setup</li>
+            <li>✔ ₹50 One-Time Setup Fee</li>
             <li>✔ Staff Support Har Time</li>
-            <li>✔ Permanent Data Save Guarantee</li>
+            <li>✔ Choose only the features you need</li>
           </ul>
-          <a href="#feature-selector-box" class="btn secondary-btn full-w">Select Features Below</a>
+          <button class="btn primary-btn full-w" onclick="openFeaturePickerModal()">Select Features</button>
         </div>
       </div>
-
-      <section id="feature-selector-box" class="feature-picker-box">
-        <h3 style="font-size:1.2rem; color:#fff; margin-bottom:4px;">Select Features (₹22.22/item + ₹50 Setup):</h3>
-        <div class="features-grid-checkbox" id="featuresList"></div>
-
-        <div class="feature-summary-bar">
-          <div style="font-size:0.88rem;">
-            <span>Selected: <strong id="selectedCount" style="color:#ff2a44;">0</strong></span> | 
-            <span>Items: ₹<strong id="itemsPrice">0</strong></span> + 
-            <span>Setup: ₹<strong id="setupPrice">0</strong></span> = 
-            <span style="color:#10b981; font-weight:bold;">Total: ₹<strong id="perFeatureTotal">0</strong></span>
-          </div>
-          <button class="btn primary-btn" id="btnOrderFeatures" onclick="checkoutFeatures()" disabled>Order Selected Features</button>
-        </div>
-      </section>
     </div>
 
     <!-- ================= CATEGORY 2: MINECRAFT ================= -->
@@ -121,7 +96,7 @@
           <div class="price">₹100 <span>One-Time</span></div>
           <ul class="features-list">
             <li>✔ Complete SoulSMP Mechanics</li>
-            <li>✔ Instant Script Download / Delivery</li>
+            <li>✔ Instant Script Delivery</li>
             <li>✔ Full Configuration Guide</li>
             <li>✔ Staff Support Har Time</li>
           </ul>
@@ -131,23 +106,15 @@
         <div class="pricing-card disabled-card">
           <div class="tag soon">Coming Soon</div>
           <h2>Lifesteal SMP Core</h2>
-          <div class="price">₹--- <span>Coming Soon</span></div>
-          <ul class="features-list">
-            <li>✔ Heart Stealing & Custom Items</li>
-            <li>✔ Anti-Dupe Protection</li>
-          </ul>
-          <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
+          <div class="price">₹---</div>
+          <p style="color:#fda4af; font-size:0.8rem;">Heart stealing mechanics & dupe protection.</p>
         </div>
 
         <div class="pricing-card disabled-card">
           <div class="tag soon">Coming Soon</div>
           <h2>Practice PvP Gamemode</h2>
-          <div class="price">₹--- <span>Coming Soon</span></div>
-          <ul class="features-list">
-            <li>✔ Arena Duels & Knockback Config</li>
-            <li>✔ Leaderboards Included</li>
-          </ul>
-          <button class="btn secondary-btn full-w" disabled>Coming Soon</button>
+          <div class="price">₹---</div>
+          <p style="color:#fda4af; font-size:0.8rem;">Arena duels & knockback settings.</p>
         </div>
       </div>
     </div>
@@ -159,69 +126,84 @@
           <div class="tag soon">Coming Soon</div>
           <h2>Discord Server Templates</h2>
           <div class="price">₹---</div>
-          <p style="color:#fda4af; font-size:0.85rem;">Custom built bot dashboard web panels & discord server structures coming very soon.</p>
+          <p style="color:#fda4af; font-size:0.8rem;">Custom bot dashboard panels and community server setups coming soon.</p>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- Unified Checkout Modal (Cleaned: No span text bugs) -->
+  <!-- POPUP 1: Select Features Modal (No page clutter) -->
+  <div id="featurePickerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeFeaturePickerModal()">&times;</span>
+      <h3 style="color:#fff; font-size:1.1rem; margin-bottom:4px;">Select Bot Features</h3>
+      <p style="color:#fda4af; font-size:0.75rem;">₹22.22/feature/mo + ₹50 setup fee</p>
+
+      <div class="features-popup-grid" id="modalFeaturesList"></div>
+
+      <div style="background:#090204; padding:10px; border-radius:8px; border:1px solid #3c1218; margin:10px 0; font-size:0.82rem;">
+        Selected: <strong id="popCount" style="color:#ff2a44;">0</strong> | 
+        Total: <strong id="popTotal" style="color:#10b981;">₹0</strong>
+      </div>
+
+      <button id="btnProceedFeatures" class="btn primary-btn full-w" onclick="proceedFromFeaturePicker()" disabled>Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- POPUP 2: Direct Paytm Payment Gateway Modal -->
   <div id="checkoutModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
       
-      <div class="paytm-header">
-        <div class="paytm-badge">
-          <span>⚡ SPARKCORE VIP CHECKOUT</span>
-          <div class="amount-tag">Payable: ₹<span id="mFinalPrice">0</span></div>
-        </div>
-        <p style="font-size:0.8rem; color:#fda4af;" id="mPlanName">Selected Plan</p>
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#20050a; padding:8px 12px; border-radius:8px; border:1px solid #ff2a44; margin-bottom:10px;">
+        <span style="font-size:0.85rem; font-weight:bold; color:#fff;">Paytm Checkout</span>
+        <span style="color:#ff2a44; font-weight:bold;">₹<span id="mFinalPrice">0</span></span>
       </div>
+      <p style="font-size:0.8rem; color:#fda4af; margin-bottom:8px;" id="mPlanName">Plan</p>
 
+      <!-- Clean Paytm QR & Direct Button -->
       <div style="text-align: center;">
-        <div class="qr-frame">
-          <img src="qr.jpg" alt="Paytm QR Code" class="qr-image">
+        <div style="background:#fff; padding:8px; border-radius:10px; display:inline-block;">
+          <img src="qr.jpg" alt="Paytm QR" style="width:145px; height:145px; display:block;">
         </div>
-        <div class="upi-address" style="font-size:0.8rem; color:#fecdd3; margin:6px 0 10px;">
-          UPI ID: <strong>6006283334@ptyes</strong> (Fouzan Tariq)[span_0](start_span)[span_0](end_span)
+        <div style="font-size:0.78rem; color:#fecdd3; margin:6px 0;">
+          UPI: <strong>6006283334@ptyes</strong> (Fouzan Tariq)
         </div>
         
-        <a id="paytmDeepLink" href="#" class="upi-app-btn">
-          <i class="fa-solid fa-mobile-screen"></i> Open in Paytm / GPay / PhonePe[span_1](start_span)[span_1](end_span)
+        <a id="paytmDeepLink" href="#" class="paytm-direct-btn">
+          <i class="fa-solid fa-wallet"></i> Pay via Paytm
         </a>
       </div>
 
-      <div style="margin: 12px 0; background: #090204; padding: 10px; border-radius: 8px; border: 1px solid #3c1218;">
-        <label style="font-size: 0.75rem; color:#fda4af;">Coupon Code (10% Instant Discount):</label>
-        <div style="display:flex; gap:6px; margin-top:4px;">
-          <input type="text" id="couponInput" placeholder="e.g. spark-core-4341" style="flex:1; padding:7px; background:#110306; border:1px solid #45131a; color:#fff; border-radius:4px; font-size:0.8rem;">
-          <button type="button" class="btn secondary-btn" style="padding:4px 10px; font-size:0.8rem;" onclick="applyDiscountCoupon()">Apply</button>
+      <!-- 10% Discount Coupon -->
+      <div style="margin: 10px 0; background: #090204; padding: 8px; border-radius: 6px; border: 1px solid #3c1218;">
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="couponInput" placeholder="Coupon Code (10% off)" style="flex:1; padding:6px; font-size:0.78rem;">
+          <button type="button" class="btn secondary-btn" style="padding:4px 10px; font-size:0.78rem;" onclick="applyDiscountCoupon()">Apply</button>
         </div>
-        <p id="couponMsg" style="font-size: 0.75rem; margin-top: 4px;"></p>
+        <p id="couponMsg" style="font-size: 0.72rem; margin-top: 3px;"></p>
       </div>
 
-      <form id="orderCheckoutForm" onsubmit="handleOrderSubmission(event)">
+      <!-- Order Form -->
+      <form onsubmit="handleOrderSubmission(event)">
         <div class="form-group">
-          <label>Your Name / Discord Tag:</label>
-          <input type="text" id="custName" placeholder="e.g., FZ / @user" required>
+          <label>Name / Discord Tag:</label>
+          <input type="text" id="custName" placeholder="e.g. FZ / @user" required>
         </div>
         <div class="form-group">
-          <label>Your Email (Invoice yahan aayega):</label>
-          <input type="email" id="custEmail" placeholder="yourname@gmail.com" required>
+          <label>Email (Invoice ke liye):</label>
+          <input type="email" id="custEmail" placeholder="your@email.com" required>
         </div>
         <div class="form-group">
           <label>Requirements / Server Link:</label>
-          <textarea id="custDetails" rows="2" placeholder="Discord server link ya details..." required></textarea>
+          <textarea id="custDetails" rows="2" placeholder="Details yahan likhein..." required></textarea>
         </div>
         <div class="form-group">
-          <label style="color:#ff2a44; font-weight:bold;">Enter 12-Digit UPI / UTR Reference No.:</label>
-          <input type="text" id="utrCode" placeholder="Enter Transaction UTR after payment" minlength="10" required>
+          <label style="color:#ff2a44; font-weight:bold;">12-Digit UTR / Transaction No.:</label>
+          <input type="text" id="utrCode" placeholder="Enter Transaction UTR" minlength="10" required>
         </div>
 
-        <button type="submit" class="btn primary-btn full-w" style="margin-top:6px;">
-          <i class="fa-solid fa-check-circle"></i> Confirm & Submit Order
-        </button>
+        <button type="submit" class="btn primary-btn full-w">Confirm & Submit Order</button>
       </form>
     </div>
   </div>
@@ -231,7 +213,6 @@
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
