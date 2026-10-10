@@ -1,5 +1,5 @@
 // ==========================================
-// 1. FIREBASE CONFIGURATION & INITIALIZATION
+// 1. FIREBASE CONFIGURATION
 // ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyC2-XllE7e9xeK8p4vOCnNMHyGPSK-Hi70",
@@ -27,21 +27,12 @@ const availableFeatures = [
   "Onboarding Buttons", "Nitro Emoji Converter", "Custom Bot Logo"
 ];
 
-// 10 Active 10% Discount Coupons
 const validCoupons = [
-  "spark-core-4341",
-  "spark-core-4342",
-  "spark-core-4343",
-  "spark-core-4344",
-  "spark-core-4345",
-  "spark-core-4346",
-  "spark-core-4347",
-  "spark-core-4348",
-  "spark-core-4349",
-  "spark-core-4340"
+  "spark-core-4341", "spark-core-4342", "spark-core-4343", "spark-core-4344",
+  "spark-core-4345", "spark-core-4346", "spark-core-4347", "spark-core-4348",
+  "spark-core-4349", "spark-core-4340"
 ];
 
-// Authorized Staff Accounts & Passwords
 const authorizedStaff = {
   "fzboy2008@gmail.com": "Fzboy786!",
   "dareque3n@gmail.com": "Fzboy786!"
@@ -56,10 +47,9 @@ let activeCheckout = {
 };
 
 // ==========================================
-// 3. INITIALIZATION & NAV
+// 3. INITIALIZATION
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Render 17 items with ₹22 rate
   const featuresContainer = document.getElementById("featuresList");
   if (featuresContainer) {
     featuresContainer.innerHTML = "";
@@ -68,13 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
       label.className = "feature-item-label";
       label.innerHTML = `
         <input type="checkbox" value="${feat}" onchange="recalculatePerFeature()">
-        <span><strong>${index + 1}.</strong> ${feat} — <em>₹22/mo</em></span>
+        <span><strong>${index + 1}.</strong> ${feat} — <em>₹22.22/mo</em></span>
       `;
       featuresContainer.appendChild(label);
     });
   }
 
-  // Handle URL query string (?id=SPK-XXXX)
   const urlParams = new URLSearchParams(window.location.search);
   const trackId = urlParams.get('id');
   if (trackId && document.getElementById('searchOrderId')) {
@@ -82,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     trackOrder();
   }
 
-  // Check Local Session for Staff Dashboard
   const savedStaff = sessionStorage.getItem("spark_staff_email");
   if (savedStaff && authorizedStaff[savedStaff] && document.getElementById('loginGate')) {
     document.getElementById("loginGate").style.display = "none";
@@ -102,14 +90,14 @@ function toggleNav() {
 }
 
 // ==========================================
-// 4. PLAN SELECTION & CHECKOUT
+// 4. PLAN SELECTIONS (UPDATED EXACT PRICES)
 // ==========================================
 function recalculatePerFeature() {
   const checked = document.querySelectorAll('#featuresList input[type="checkbox"]:checked');
   const count = checked.length;
-  const itemsPrice = count * 22; // ₹22 per feature
-  const setupPrice = count > 0 ? 50 : 0; // ₹50 one-time setup
-  const total = itemsPrice + setupPrice;
+  const itemsPrice = parseFloat((count * 22.22).toFixed(2));
+  const setupPrice = count > 0 ? 50 : 0;
+  const total = parseFloat((itemsPrice + setupPrice).toFixed(2));
 
   document.getElementById("selectedCount").innerText = count;
   document.getElementById("itemsPrice").innerText = itemsPrice;
@@ -121,7 +109,8 @@ function recalculatePerFeature() {
 function checkoutFeatures() {
   const checkedInputs = Array.from(document.querySelectorAll('#featuresList input[type="checkbox"]:checked'));
   const selectedNames = checkedInputs.map(cb => cb.value);
-  const total = (selectedNames.length * 22) + 50;
+  const count = selectedNames.length;
+  const total = parseFloat(((count * 22.22) + 50).toFixed(2));
 
   openCheckoutModal("SparkCore Selected Features", selectedNames.join(", "), total);
 }
@@ -134,7 +123,7 @@ function updateCustomTotal() {
   const selectElem = document.getElementById("customPanelSelect");
   if (!selectElem) return;
   const panel = parseInt(selectElem.value, 10);
-  const total = 550 + panel; // ₹550 Base Creation Fee
+  const total = parseFloat((555.56 + panel).toFixed(2));
   document.getElementById("customTotalDisplay").innerText = `Total: ₹${total}`;
 }
 
@@ -142,7 +131,8 @@ function selectCustomPlan() {
   const selectElem = document.getElementById("customPanelSelect");
   const panel = selectElem ? parseInt(selectElem.value, 10) : 0;
   const panelText = panel === 300 ? "SparkCore 24/7 Hosting Panel (₹300/mo)" : "Self Hosted VPS (₹0)";
-  openCheckoutModal("Custom Bot Creation", `Base Creation: ₹550 | Hosting: ${panelText}`, 550 + panel);
+  const total = parseFloat((555.56 + panel).toFixed(2));
+  openCheckoutModal("Custom Bot Creation", `Base: ₹555.56 | Hosting: ${panelText}`, total);
 }
 
 function openCheckoutModal(planName, details, price) {
@@ -173,19 +163,17 @@ function closeModal() {
   document.getElementById("checkoutModal").style.display = "none";
 }
 
-// 10% Discount Coupon Handler
 function applyDiscountCoupon() {
   const code = document.getElementById("couponInput").value.trim().toLowerCase();
   const msg = document.getElementById("couponMsg");
 
   if (validCoupons.includes(code)) {
-    const discount = Math.round(activeCheckout.rawPrice * 0.10);
-    activeCheckout.finalPrice = activeCheckout.rawPrice - discount;
+    const discount = parseFloat((activeCheckout.rawPrice * 0.10).toFixed(2));
+    activeCheckout.finalPrice = parseFloat((activeCheckout.rawPrice - discount).toFixed(2));
     activeCheckout.appliedCoupon = code;
 
     document.getElementById("mFinalPrice").innerText = activeCheckout.finalPrice;
 
-    // Update UPI Link to discounted amount
     const upiLink = `upi://pay?pa=6006283334@ptyes&pn=Fouzan%20Tariq&am=${activeCheckout.finalPrice}&cu=INR&tn=SparkCore%20Payment`;
     document.getElementById("paytmDeepLink").setAttribute("href", upiLink);
 
@@ -229,7 +217,7 @@ async function handleOrderSubmission(e) {
 
   try {
     await firebase.database().ref('orders/' + orderId).set(payload);
-    alert(`Order Placed!\nOrder ID: ${orderId}\nApproval under staff review.`);
+    alert(`Order Placed!\nOrder ID: ${orderId}\nUnder staff review.`);
     closeModal();
     window.location.href = `orders.html?id=${orderId}`;
   } catch (err) {
@@ -239,7 +227,7 @@ async function handleOrderSubmission(e) {
 }
 
 // ==========================================
-// 6. ORDER TRACKER & INVOICE
+// 6. TRACK ORDER & INVOICE
 // ==========================================
 async function trackOrder() {
   const idInput = document.getElementById("searchOrderId");
@@ -274,8 +262,8 @@ async function trackOrder() {
     const discountLine = document.getElementById("invDiscountLine");
     if (data.coupon && data.coupon !== "NONE") {
       discountLine.style.display = "block";
-      const saved = (data.rawAmount || data.amount) - data.amount;
-      document.getElementById("invDiscountVal").innerText = saved > 0 ? saved : Math.round(data.amount * 0.10);
+      const saved = (parseFloat(data.rawAmount || data.amount) - parseFloat(data.amount)).toFixed(2);
+      document.getElementById("invDiscountVal").innerText = saved;
     } else {
       discountLine.style.display = "none";
     }
@@ -289,7 +277,7 @@ async function trackOrder() {
 }
 
 // ==========================================
-// 7. STAFF EMAIL/PASSWORD AUTH & DASHBOARD
+// 7. STAFF LOGIN & MANAGEMENT
 // ==========================================
 function handleStaffEmailLogin(e) {
   e.preventDefault();
@@ -332,7 +320,7 @@ function loadAdminOrders() {
         <td><strong>${o.orderId}</strong></td>
         <td>${o.clientName || 'Client'}<br><small style="color:#fda4af;">${o.clientEmail || ''}</small></td>
         <td>${o.plan || 'Custom Plan'}</td>
-        <td><code style="background:#090305; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr || 'N/A'}</code></td>
+        <td><code style="background:#090204; padding:2px 6px; border-radius:4px; color:#ff4d64;">${o.utr || 'N/A'}</code></td>
         <td>₹${o.amount}</td>
         <td><small style="color:#f59e0b;">${o.coupon || 'NONE'}</small></td>
         <td><span class="badge-status badge-${o.status}">${o.status}</span></td>
@@ -360,4 +348,4 @@ function deleteOrder(id) {
       alert(`Order ${id} deleted successfully!`);
     });
   }
-}
+                                       }
