@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SparkCore | High Performance Discord Bots & Minecraft Services</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SparkCore | High Performance Discord Bots & Game Services</title>
   <link rel="icon" type="image/png" href="logo.png">
 
   <meta name="description" content="SparkCore is the leading Discord Bot & Minecraft Skript service provider in India. 24/7 uptime, 0-data loss guarantee, instant Discord setup & full staff support.">
   <meta name="keywords" content="SparkCore, Discord Bots India, Minecraft Skript, Soulsmp gamemode, Spark community, Discord setup">
   <link rel="canonical" href="https://fzboy2008-ui.github.io/SparkCore/">
 
+  <!-- Google Sitelinks Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,9 +24,7 @@
       "email": "fzboy2008@gmail.com",
       "contactType": "customer service"
     },
-    "sameAs": [
-      "https://discord.gg/62xxMq2NKv"
-    ]
+    "sameAs": ["https://discord.gg/62xxMq2NKv"]
   }
   </script>
 
@@ -34,89 +33,124 @@
 </head>
 <body>
 
-  <div class="nav-backdrop" id="navBackdrop" onclick="toggleNav()"></div>
-
+  <!-- Clean Top Nav Buttons -->
   <nav class="navbar">
     <a href="index.html" class="logo">
       <img src="logo.png" alt="SparkCore Logo">
       Spark<span>Core</span>
     </a>
-    <button class="menu-toggle" onclick="toggleNav()" type="button" aria-label="Toggle Menu">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-    <ul class="nav-links" id="navDrawer">
-      <button class="close-menu-btn" onclick="toggleNav()" type="button">&times;</button>
-      <li><a href="index.html" onclick="navigateTo('index.html')" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
-      <li><a href="plans.html" onclick="navigateTo('plans.html')"><i class="fa-solid fa-layer-group"></i> Plans & Shop</a></li>
-      <li><a href="orders.html" onclick="navigateTo('orders.html')"><i class="fa-solid fa-receipt"></i> Orders & Invoices</a></li>
-      <li><a href="admin.html" onclick="navigateTo('admin.html')" class="btn-staff"><i class="fa-solid fa-lock"></i> Staff Login</a></li>
-    </ul>
+    <div class="nav-btns">
+      <a href="index.html" class="nav-btn active"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="plans.html" class="nav-btn"><i class="fa-solid fa-layer-group"></i> Plans</a>
+      <a href="orders.html" class="nav-btn"><i class="fa-solid fa-receipt"></i> Orders</a>
+      <a href="admin.html" class="nav-btn staff-btn"><i class="fa-solid fa-lock"></i> Staff</a>
+    </div>
   </nav>
 
+  <!-- Hero with Centered Orbit Hologram -->
   <header class="hero">
     <div class="badge-hero">🚀 Powered by SparkCore Engine</div>
 
     <div class="hologram-stage">
       <div class="orbit-ring orbit-1"></div>
-      <div class="orbit-ring orbit-2"></div>
-      <img src="logo.png" alt="SparkCore Hologram Logo" class="holo-core-logo">
+      <img src="logo.png" alt="SparkCore Logo" class="holo-core-logo">
       <div class="orbit-badge badge-pos-1"><i class="fa-solid fa-user-astronaut"></i> CREATOR: FZBOY</div>
       <div class="orbit-badge badge-pos-2"><i class="fa-solid fa-shield-halved"></i> 99.9% UPTIME</div>
-      <div class="orbit-badge badge-pos-3"><i class="fa-solid fa-bolt"></i> PROJECT: SPARKCORE</div>
+      <div class="orbit-badge badge-pos-3"><i class="fa-solid fa-bolt"></i> SPARKCORE</div>
     </div>
 
     <h1>Build & Scale Your Server With <span>SparkCore</span></h1>
-    <p>Professional custom Discord bots, guaranteed zero data loss architecture, 24/7 uptime hosting panel, and Minecraft resource setups.</p>
+    <p>Professional custom Discord bots, guaranteed zero data loss architecture, 24/7 hosting panel, and Minecraft resource setups.</p>
     <div class="hero-btns">
       <a href="plans.html" class="btn primary-btn"><i class="fa-solid fa-cart-shopping"></i> Explore Plans</a>
       <a href="https://discord.gg/62xxMq2NKv" target="_blank" class="btn discord-btn"><i class="fa-brands fa-discord"></i> Join Discord Server</a>
     </div>
   </header>
 
-  <section class="section">
+  <!-- Key Info Cards -->
+  <div class="container">
     <h2 class="section-title">Why Choose SparkCore?</h2>
     <div class="cards-grid">
       <div class="card">
-        <i class="fa-solid fa-database" style="font-size:2rem; color:#ff2a44; margin-bottom:0.8rem;"></i>
+        <i class="fa-solid fa-database" style="font-size:1.8rem; color:#ff2a44; margin-bottom:0.6rem;"></i>
         <h3>Zero Data Loss</h3>
-        <p>Bot remove ya kick ho jane ke baad bhi configuration hamesha cloud me secure rehta hai.</p>
+        <p>Bot kick ya remove hone ke baad bhi configuration aur database cloud mein safe rehta hai.</p>
       </div>
-
       <div class="card">
-        <i class="fa-solid fa-bolt" style="font-size:2rem; color:#ff2a44; margin-bottom:0.8rem;"></i>
+        <i class="fa-solid fa-bolt" style="font-size:1.8rem; color:#ff2a44; margin-bottom:0.6rem;"></i>
         <h3>Ultra Fast & 24/7 Online</h3>
-        <p>Dedicated hosting panels aur 99.9% uptime bina kisi downtime ya command latency ke.</p>
+        <p>Dedicated hosting panels aur instant response bina kisi latency ya downtime ke.</p>
       </div>
-
       <div class="card">
-        <i class="fa-solid fa-headset" style="font-size:2rem; color:#ff2a44; margin-bottom:0.8rem;"></i>
+        <i class="fa-solid fa-headset" style="font-size:1.8rem; color:#ff2a44; margin-bottom:0.6rem;"></i>
         <h3>Active Staff Support</h3>
-        <p>Har plan ke saath free Discord setup aur direct ticket support milta hai hamari verified staff team se.</p>
+        <p>Free Discord setup har plan ke saath aur 24/7 staff ticket assistance.</p>
       </div>
     </div>
-  </section>
 
-  <section class="section">
+    <!-- Official Contacts -->
     <h2 class="section-title">Official Contact</h2>
     <div class="cards-grid">
       <div class="card" style="text-align: center;">
-        <i class="fa-solid fa-envelope" style="font-size:2rem; color:#ff4d64; margin-bottom:0.6rem;"></i>
+        <i class="fa-solid fa-envelope" style="font-size:1.8rem; color:#ff4d64; margin-bottom:0.5rem;"></i>
         <h3>Direct Email</h3>
         <p><a href="mailto:fzboy2008@gmail.com" style="color:#fca5a5; font-weight:bold; text-decoration:none;">fzboy2008@gmail.com</a></p>
       </div>
       <div class="card" style="text-align: center;">
-        <i class="fa-brands fa-discord" style="font-size:2rem; color:#5865f2; margin-bottom:0.6rem;"></i>
+        <i class="fa-brands fa-discord" style="font-size:1.8rem; color:#5865f2; margin-bottom:0.5rem;"></i>
         <h3>Discord Community</h3>
         <p><a href="https://discord.gg/62xxMq2NKv" target="_blank" style="color:#5865f2; font-weight:bold; text-decoration:none;">discord.gg/62xxMq2NKv</a></p>
       </div>
     </div>
-  </section>
+
+    <!-- REAL CUSTOMER REVIEWS (Approved Only) -->
+    <section class="reviews-section">
+      <h2 style="font-size:1.3rem; color:#fff; text-align:center; margin-bottom:4px;">💬 Verified Customer Reviews</h2>
+      <p style="text-align:center; color:#fda4af; font-size:0.8rem; margin-bottom:1.2rem;">Sirf Approved Order ID wale verified buyers hi feedback submit kar sakte hain.</p>
+
+      <!-- Review Submission Box -->
+      <div class="review-form-box">
+        <h4 style="font-size:0.9rem; color:#fff; margin-bottom:8px;">Leave a Verified Review</h4>
+        <form onsubmit="submitCustomerReview(event)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div class="form-group">
+              <label>Your Order ID (e.g. SPK-4912):</label>
+              <input type="text" id="revOrderId" placeholder="Must be Approved" required>
+            </div>
+            <div class="form-group">
+              <label>Rating:</label>
+              <select id="revRating">
+                <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                <option value="3">⭐⭐⭐ (3/5)</option>
+                <option value="2">⭐⭐ (2/5)</option>
+                <option value="1">⭐ (1/5)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Your Feedback:</label>
+            <textarea id="revComment" rows="2" placeholder="Share your experience with SparkCore..." required></textarea>
+          </div>
+          <button type="submit" class="btn primary-btn" style="padding:6px 12px; font-size:0.82rem;">Submit Verified Review</button>
+          <span id="revStatusMsg" style="font-size:0.75rem; margin-left:8px;"></span>
+        </form>
+      </div>
+
+      <!-- Live Reviews Display with Like/Dislike -->
+      <div class="reviews-grid" id="reviewsContainer">
+        <!-- Loaded via Firebase -->
+      </div>
+    </section>
+  </div>
 
   <footer>
     <p>© SparkCore. All rights reserved.</p>
     <p style="margin-top: 4px;">Author: FZBOY | Support: <a href="mailto:fzboy2008@gmail.com">fzboy2008@gmail.com</a></p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
